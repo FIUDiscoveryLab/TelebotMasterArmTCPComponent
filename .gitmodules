@@ -1,0 +1,18 @@
+[submodule "src/discoverylab/telebot/master"]
+	path = src/discoverylab/telebot/master
+	url = https://github.com/FIUDiscoveryLab/telebotmastercore.git
+[submodule "src/TelebotDDSCore"]
+	path = src/TelebotDDSCore
+	url = https://github.com/FIUDiscoveryLab/TelebotDDSCore.git
+[submodule "src/discoverylab/util/logging"]
+	path = src/discoverylab/util/logging
+	url = https://github.com/FIUDiscoveryLab/logging.git
+[submodule "ThirdParty/SFL4J"]
+	path = ThirdParty/SFL4J
+	url = https://github.com/FIUDiscoveryLab/SLF4J.git
+[submodule "ThirdParty/JSSC"]
+	path = ThirdParty/JSSC
+	url = https://github.com/FIUDiscoveryLab/JSSC.git
+[submodule "ThirdParty/ndds.5.1.0"]
+	path = ThirdParty/ndds.5.1.0
+	url = https://github.com/FIUDiscoveryLab/ndds.5.1.0.git
