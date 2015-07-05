@@ -1,6 +1,3 @@
-[submodule "src/discoverylab/telebot/master"]
-	path = src/discoverylab/telebot/master
-	url = https://github.com/FIUDiscoveryLab/telebotmastercore.git
 [submodule "src/TelebotDDSCore"]
 	path = src/TelebotDDSCore
 	url = https://github.com/FIUDiscoveryLab/TelebotDDSCore.git
@@ -16,3 +13,6 @@
 [submodule "ThirdParty/ndds.5.1.0"]
 	path = ThirdParty/ndds.5.1.0
 	url = https://github.com/FIUDiscoveryLab/ndds.5.1.0.git
+[submodule "src/discoverylab/telebot/master/core"]
+	path = src/discoverylab/telebot/master/core
+	url = https://github.com/FIUDiscoveryLab/telebotmastercore.git
