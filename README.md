@@ -3,7 +3,7 @@ Socket Server Arm Component used for interacting with devices that use a client 
 
 ##Installation
 ###Git
-`git clone --recursive https://github.com/FIUDiscoveryLab/TelebotMasterArmTCPComponent.git`
+`git clone --recursive https://github.com/FIUDiscoveryLab/TelebotMasterArmTCP.git`
 
 ###Eclipse IDE
 
