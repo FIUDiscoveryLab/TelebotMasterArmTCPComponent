@@ -8,7 +8,7 @@ import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArms;
 import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArmsDataWriter;
 import discoverylab.telebot.master.arms.model.YEIDataModel;
 import discoverylab.telebot.master.arms.parser.YEIDataParser;
-import discoverylab.telebot.master.core.CoreMasterTCPComponent;
+import discoverylab.telebot.master.core.component.CoreMasterTCPComponent;
 import discoverylab.telebot.master.core.socket.CoreServerSocket;
 
 public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implements CoreServerSocket.CallbackInterface{
