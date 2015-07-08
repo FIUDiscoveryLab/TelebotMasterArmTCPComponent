@@ -1,5 +1,8 @@
 package discoverylab.telebot.master.arms;
 
+import src.discoverylab.telebot.master.arms.mapper.ServoDataMapper;
+import src.discoverylab.telebot.master.arms.model.ServoDataModel;
+
 import com.rti.dds.infrastructure.InstanceHandle_t;
 import com.rti.dds.publication.DataWriterImpl;
 
@@ -15,6 +18,11 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	
 	private CallbackInterface callbackInterface;
 	private YEIDataParser parser;
+	private YEIDataSynchronizer synchronizer;
+	private ServoDataMapper mapper;
+	private ServoDataParser servoParser;
+	
+	private long defaultSpeed = 100;
 	
 	private DDSCommunicator communicator;
 	
@@ -25,7 +33,9 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	public TelebotMasterArmsTCPComponent(int portNumber) {
 		super(portNumber);
 		parser = new YEIDataParser();
-	
+		synchronizer = new YEIDataSynchronizer();
+		mapper = new ServoDataMapper();
+		servoParser = new ServoDataParser();
 	}
 	
 	/**
@@ -35,31 +45,161 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	public void initiateDataWriter(){
 		writer = (TMasterToArmsDataWriter) getDataWriter();
 	}
-
+	
+	boolean isSynchronized = false;
+	int timer = 1000000;
+	int count = 0;
+	
 	@Override
 	public void callback(String data) {
+		
 		YEIDataModel yeiDataInstance = (YEIDataModel) parser.parse(data);
 		
 		//NOTE: setDataWriter should be called from the Driver class///
 		
-		// WRITE X
-//		instance.servoId = 
-//		instance.servoPositon = 
-//		instance.servoSpeed = 
-//		writer.write_untyped(instance, instance_handle);
+		if(isSynchronized)
+		{
+			if(count < timer)
+			{
+				count = synchronizer.synchronize(yeiDataInstance, count);
+			}
+			else
+			{
+				isSynchronized = true;
+			}
+		}
 		
-		// WRITE Y
-//		instance.servoId = 
-//		instance.servoPositon = 
-//		instance.servoSpeed = 
-//		writer.write_untyped(instance, instance_handle);
+		String jointType = yeiDataInstance.getJointType();
+		long x = yeiDataInstance.getX();
+		long y = yeiDataInstance.getY();
+		long z = yeiDataInstance.getZ();
+		long sensorMaxX = yeiDataInstance.getMaxX();
+		long sensorMinX = yeiDataInstance.getMinX();
+		long sensorMaxY = yeiDataInstance.getMaxY();
+		long sensorMinY = yeiDataInstance.getMinY();
+		long sensorMaxZ = yeiDataInstance.getMaxZ();
+		long sensorMinZ = yeiDataInstance.getMinZ();
+		long positionX, positionY, positionZ;
 		
-		// WRITE Z
-//		instance.servoId = 
-//		instance.servoPositon = 
-//		instance.servoSpeed = 
-//		writer.write_untyped(instance, instance_handle);
-
+		if(jointType.equals("head"))
+		{
+			positionX = mapper.map(x, sensorMaxX, sensorMinX, servo_max, servo_min);
+			positionY = mapper.map(y, sensorMaxY, sensorMinY, servo_max, servo_max);
+			
+			// WRITE X
+			instance.servoId = 10;
+			instance.servoPositon = positionX;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+			
+			// WRITE Y
+			instance.servoId = 11;
+			instance.servoPositon = positionY;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+		}
+		else if(jointType.equals("left_shoulder"))
+		{
+			positionX = mapper.map(x, sensorMaxX, sensorMinX, 3600, 2048);
+			positionY = mapper.map(y, sensorMaxY, sensorMinY, 3600, 2048);
+			positionZ = mapper.map(z, sensorMaxZ, sensorMinZ, 3072, 1024);
+			
+			// WRITE X
+			instance.servoId = 20;
+			instance.servoPositon = positionX;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+			
+			// WRITE Y
+			instance.servoId = 21;
+			instance.servoPositon = positionY;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+			
+			// WRITE Z
+			instance.servoId = 22;
+			instance.servoPositon = positionZ;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+		}
+		else if(jointType.equals("left_elbow"))
+		{
+			positionZ = mapper.map(z, sensorMaxZ, sensorMinZ, 3072, 2048);
+			
+			// WRITE Z
+			instance.servoId = 23;
+			instance.servoPositon = positionZ;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+		}
+		else if(jointType.equals("left_wrist"))
+		{
+			positionX = mapper.map(x, sensorMaxX, sensorMinX, 3072, 1024);
+			positionZ = mapper.map(z, sensorMaxZ, sensorMinZ, 3072, 1024);
+			
+			// WRITE X
+			instance.servoId = 24;
+			instance.servoPositon = positionX;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+			
+			// WRITE Z
+			instance.servoId = 25;
+			instance.servoPositon = positionZ;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+		}
+		else if(jointType.equals("right_shoulder"))
+		{
+			positionX = mapper.map(x, sensorMaxX, sensorMinX, 2048, 600);
+			positionY = mapper.map(y, sensorMaxY, sensorMinY, 2048, 600);
+			positionZ = mapper.map(z, sensorMaxZ, sensorMinZ, 3072, 1024);
+			
+			// WRITE X
+			instance.servoId = 30;
+			instance.servoPositon = positionX;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+			
+			// WRITE Y
+			instance.servoId = 31;
+			instance.servoPositon = positionY;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+			
+			// WRITE Z
+			instance.servoId = 32;
+			instance.servoPositon = positionZ;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+		}
+		else if(jointType.equals("right_elbow"))
+		{
+			positionZ = mapper.map(z, sensorMaxZ, sensorMinZ, 2048, 1024);
+			
+			// WRITE Z
+			instance.servoId = 33;
+			instance.servoPositon = positionZ;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+		}
+		else if(jointType.equals("right_wrist"))
+		{
+			positionX = mapper.map(x, sensorMaxX, sensorMinX, 3072, 1024);
+			positionZ = mapper.map(z, sensorMaxZ, sensorMinZ, 3072, 1024);
+			
+			// WRITE X
+			instance.servoId = 34;
+			instance.servoPositon = positionX;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+			
+			// WRITE Z
+			instance.servoId = 35;
+			instance.servoPositon = positionZ;
+			instance.servoSpeed = defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+		}
 		callbackInterface.callback(yeiDataInstance);
 	}
 
