@@ -10,7 +10,7 @@ public class TelebotMasterArmsTCPTest {
 	public static String TAG = makeLogTag("TelebotMasterArmsTCPTest");
 	public static void maint(String args []) {
 		// 1. INITIATE Slave Component DEVICE
-		TelebotMasterArmsTCPComponent telebotMasterArms = new TelebotMasterArmsTCPComponent(666);
+		TelebotMasterArmsTCPComponent telebotMasterArms = new TelebotMasterArmsTCPComponent(6666);
 		telebotMasterArms.initiate();
 		
 		// 2. INITIATE Transmission PROTOCOL
