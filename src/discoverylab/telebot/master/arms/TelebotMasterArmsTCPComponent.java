@@ -1,7 +1,8 @@
 package discoverylab.telebot.master.arms;
 
-import src.discoverylab.telebot.master.arms.mapper.ServoDataMapper;
-import src.discoverylab.telebot.master.arms.model.ServoDataModel;
+import static discoverylab.util.logging.LogUtils.*;
+import discoverylab.telebot.master.arms.mapper.ServoDataMapper;
+import discoverylab.telebot.master.arms.model.ServoDataModel;
 
 import com.rti.dds.infrastructure.InstanceHandle_t;
 import com.rti.dds.publication.DataWriterImpl;
@@ -10,11 +11,15 @@ import TelebotDDSCore.DDSCommunicator;
 import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArms;
 import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArmsDataWriter;
 import discoverylab.telebot.master.arms.model.YEIDataModel;
+import discoverylab.telebot.master.arms.parser.ServoDataParser;
 import discoverylab.telebot.master.arms.parser.YEIDataParser;
+import discoverylab.telebot.master.arms.synchronization.YEIDataSynchronizer;
 import discoverylab.telebot.master.core.component.CoreMasterTCPComponent;
 import discoverylab.telebot.master.core.socket.CoreServerSocket;
 
-public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implements CoreServerSocket.CallbackInterface{
+public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implements CoreServerSocket.SocketEventListener{
+	
+	public static String TAG = makeLogTag(TelebotMasterArmsTCPComponent.class);
 	
 	private CallbackInterface callbackInterface;
 	private YEIDataParser parser;
@@ -53,10 +58,11 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	@Override
 	public void callback(String data) {
 		
+		LOGI(TAG, "DATA: " + data );
 		YEIDataModel yeiDataInstance = (YEIDataModel) parser.parse(data);
 		
 		//NOTE: setDataWriter should be called from the Driver class///
-		
+		/*
 		if(isSynchronized)
 		{
 			if(count < timer)
@@ -201,6 +207,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			writer.write_untyped(instance, instance_handle);
 		}
 		callbackInterface.callback(yeiDataInstance);
+		*/
 	}
 
 	/**

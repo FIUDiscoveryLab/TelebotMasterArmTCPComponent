@@ -1,45 +1,44 @@
-package src.discoverylab.telebot.master.arms.parser;
+package discoverylab.telebot.master.arms.parser;
 
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.BufferedReader;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import discoverylab.telebot.master.arms.model.ServoDataModel;
+import discoverylab.telebot.master.core.parser.CoreDataParser;
 
 public class ServoDataParser extends CoreDataParser {
-
+	
 	@Override
-	public Object parse(String filename)
-	{
-		final int number_of_servos = 14;
+	public Object parse(String str) {
+		StringTokenizer tokenizer = parseUsingTokenizer(str);
+		ServoDataModel instance = new ServoDataModel();
+		instance.setServoID(Integer.parseInt( tokenizer.nextToken()) );
+		instance.setMax( Long.parseLong(tokenizer.nextToken()) );
+		instance.setMin( Long.parseLong(tokenizer.nextToken()) );
+		return instance;
+	}
+	
+	public ArrayList<ServoDataModel> parseConfigurationFile(String fileName) {
+		ArrayList<ServoDataModel> servoDataList = new ArrayList<>();
 		
-		try{
-			FileReader readFile = new FileReader(filename);
-			BufferedReader input = new BufferedReader(readFile);
-			
+		try {
+			FileReader fr = new FileReader(fileName);
+			BufferedReader br = new BufferedReader(fr);
 			String str;
-			int count = 0;
 			
-			for(int i = 0; i < number_of_servos; i++)
-			{
-				if(input.readLine() != null)
-				{
-					if(str != null)
-					{
-						StringTokenizer tokenizer = parseUsingTokenizer(str);
-						ServoDataModel[] servoData = new ServoDataModel[number_of_servos];
-						ServoDataModel instance = new ServoDataModel();
-						instance.setServoID(Integer.parseInt(tokenizer.nextToken()));
-						instance.setMax(Long.parseLong(tokenizer.nextToken()));
-						instance.setMin(Long.parseLong(tokenizer.nextToken()));
-						servoData[count] = instance;
-						count++;
-					}
-				}
+			while((str = br.readLine()) != null) {
+				servoDataList.add((ServoDataModel)parse(str));
 			}
-
-		}
-		catch(IOException e)
-		{
+			
+			br.close();
+			fr.close();
+		} 
+		catch(IOException e) {
 			e.printStackTrace();
 		}
+		return servoDataList;
 	}
 }

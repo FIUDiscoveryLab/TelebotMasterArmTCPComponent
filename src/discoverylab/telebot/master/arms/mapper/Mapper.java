@@ -1,4 +1,4 @@
-package src.discoverylab.telebot.master.arms.mapper;
+package discoverylab.telebot.master.arms.mapper;
 
 public abstract class Mapper {
 	

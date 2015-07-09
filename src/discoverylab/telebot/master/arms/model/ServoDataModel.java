@@ -1,4 +1,4 @@
-package src.discoverylab.telebot.master.arms.model;
+package discoverylab.telebot.master.arms.model;
 
 public class ServoDataModel {
 	

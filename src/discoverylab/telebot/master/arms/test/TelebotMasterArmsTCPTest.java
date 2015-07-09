@@ -8,7 +8,8 @@ import discoverylab.telebot.master.arms.TelebotMasterArmsTCPComponent;
 public class TelebotMasterArmsTCPTest {
 
 	public static String TAG = makeLogTag("TelebotMasterArmsTCPTest");
-	public static void maint(String args []) {
+	
+	public static void main(String args []) {
 		// 1. INITIATE Slave Component DEVICE
 		TelebotMasterArmsTCPComponent telebotMasterArms = new TelebotMasterArmsTCPComponent(6666);
 		telebotMasterArms.initiate();
