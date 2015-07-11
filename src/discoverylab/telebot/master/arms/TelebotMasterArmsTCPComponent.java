@@ -1,6 +1,7 @@
 package discoverylab.telebot.master.arms;
 
 import static discoverylab.util.logging.LogUtils.*;
+import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
 import discoverylab.telebot.master.arms.mapper.ServoDataMapper;
 import discoverylab.telebot.master.arms.model.ServoDataModel;
 
@@ -62,7 +63,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		YEIDataModel yeiDataInstance = (YEIDataModel) parser.parse(data);
 		
 		//NOTE: setDataWriter should be called from the Driver class///
-		/*
+		
 		if(isSynchronized)
 		{
 			if(count < timer)
@@ -89,8 +90,20 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		
 		if(jointType.equals("head"))
 		{
-			positionX = mapper.map(x, sensorMaxX, sensorMinX, servo_max, servo_min);
-			positionY = mapper.map(y, sensorMaxY, sensorMinY, servo_max, servo_max);
+			positionX = mapper.map(
+					x, 
+					sensorMaxX, 
+					sensorMinX, 
+					MasterArmsConfig.HEAD_YAW_MAX, 
+					MasterArmsConfig.HEAD_YAW_MIN
+					);
+			
+			positionY = mapper.map(
+					y, 
+					sensorMaxY, 
+					sensorMinY, 
+					MasterArmsConfig.HEAD_PITCH_MAX, 
+					MasterArmsConfig.HEAD_PITCH_MIN);
 			
 			// WRITE X
 			instance.servoId = 10;
@@ -207,7 +220,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			writer.write_untyped(instance, instance_handle);
 		}
 		callbackInterface.callback(yeiDataInstance);
-		*/
+
 	}
 
 	/**
