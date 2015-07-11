@@ -1,4 +1,4 @@
-package src.discoverylab.telebot.master.arms.synchronization;
+package discoverylab.telebot.master.arms.synchronization;
 
 public abstract class Synchronizer {
 	

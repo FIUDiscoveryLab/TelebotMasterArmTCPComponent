@@ -1,17 +1,17 @@
 package discoverylab.telebot.master.arms.synchronization;
 
-import src.discoverylab.telebot.master.arms.model.String;
+import discoverylab.telebot.master.arms.model.YEIDataModel;
 
 public class YEIDataSynchronizer extends Synchronizer {
 	
 	public YEIDataSynchronizer(){}
 	
-	public void findMaxMin(Object instance, long maxX, long minX, 
+	public void findMaxMin(YEIDataModel instance, long maxX, long minX, 
 			long maxY, long minY, long maxZ, long minZ)
 	{
-		long x = instance.getX;
-		long y = instance.getY;
-		long z = instance.getZ;
+		long x = instance.getX();
+		long y = instance.getY();
+		long z = instance.getZ();
 		
 		if(x < minX)
 		{
@@ -41,7 +41,7 @@ public class YEIDataSynchronizer extends Synchronizer {
 		}
 	}
 	
-	public int synchronize(Object instance, int count)
+	public int synchronize(YEIDataModel instance, int count)
 	{
 		long maxX = -360;
 		long minX = 360;
@@ -82,6 +82,19 @@ public class YEIDataSynchronizer extends Synchronizer {
 		
 		count++;
 		return count;
+	}
+
+	@Override
+	public void findMaxMin(Object instance, long maxX, long minX, long maxY,
+			long minY, long maxZ, long minZ) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int synchronize(Object instance, int count) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }
