@@ -45,6 +45,13 @@ Socket Server Arm Component used for interacting with devices that use a client 
 ..2Click on New button
 ..3 Name: `PATH`  , VALUE: `${project_loc}\ThirdParty\ndds.5.1.0\lib\x64Win64jdk`
 
+#### Windows 32x
+1. Set java path
+..*Right click on the project -> properties -> set java build path
+2. set environment variable
+..1Right click Java which contains main class -> Run As -> Run Configurations -> Environments (tab)
+..2Click on New button
+..3 Name: `PATH`  , VALUE: `${project_loc}\ThirdParty\ndds.5.1.0\lib\i86Win32jdk`
 
 ## Software Logic
 
