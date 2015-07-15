@@ -2,8 +2,9 @@ package discoverylab.telebot.master.arms;
 
 import static discoverylab.util.logging.LogUtils.*;
 import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
+import discoverylab.telebot.master.arms.configurations.SensorConfig;
 import discoverylab.telebot.master.arms.mapper.ServoDataMapper;
-import discoverylab.telebot.master.arms.model.ServoDataModel;
+//import discoverylab.telebot.master.arms.model.ServoDataModel;
 
 import com.rti.dds.infrastructure.InstanceHandle_t;
 import com.rti.dds.publication.DataWriterImpl;
@@ -12,11 +13,12 @@ import TelebotDDSCore.DDSCommunicator;
 import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArms;
 import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArmsDataWriter;
 import discoverylab.telebot.master.arms.model.YEIDataModel;
-import discoverylab.telebot.master.arms.parser.ServoDataParser;
+//import discoverylab.telebot.master.arms.parser.ServoDataParser;
 import discoverylab.telebot.master.arms.parser.YEIDataParser;
-import discoverylab.telebot.master.arms.synchronization.YEIDataSynchronizer;
+//import discoverylab.telebot.master.arms.synchronization.YEIDataSynchronizer;
 import discoverylab.telebot.master.core.component.CoreMasterTCPComponent;
 import discoverylab.telebot.master.core.socket.CoreServerSocket;
+
 
 public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implements CoreServerSocket.SocketEventListener{
 	
@@ -24,7 +26,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	
 	private CallbackInterface callbackInterface;
 	private YEIDataParser parser;
-	private YEIDataSynchronizer synchronizer;
+//	private YEIDataSynchronizer synchronizer;
 	private ServoDataMapper mapper;
 	
 	private long defaultSpeed = 100;
@@ -38,7 +40,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	public TelebotMasterArmsTCPComponent(int portNumber) {
 		super(portNumber);
 		parser = new YEIDataParser();
-		synchronizer = new YEIDataSynchronizer();
+//		synchronizer = new YEIDataSynchronizer();
 		mapper = new ServoDataMapper();
 	}
 	
@@ -50,9 +52,9 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		writer = (TMasterToArmsDataWriter) getDataWriter();
 	}
 	
-	boolean isSynchronized = false;
-	int timer = 1000000;
-	int count = 0;
+//	boolean isSynchronized = false;
+//	int timer = 1000000;
+//	int count = 0;
 	
 	@Override
 	public void callback(String data) {
@@ -62,44 +64,44 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		
 		//NOTE: setDataWriter should be called from the Driver class///
 		
-		if(isSynchronized)
-		{
-			if(count < timer)
-			{
-				count = synchronizer.synchronize(yeiDataInstance, count);
-			}
-			else
-			{
-				isSynchronized = true;
-			}
-		}
+//		if(isSynchronized)
+//		{
+//			if(count < timer)
+//			{
+//				count = synchronizer.synchronize(yeiDataInstance, count);
+//			}
+//			else
+//			{
+//				isSynchronized = true;
+//			}
+//		}
 		
 		String jointType = yeiDataInstance.getJointType();
 		long x = yeiDataInstance.getX();
 		long y = yeiDataInstance.getY();
 		long z = yeiDataInstance.getZ();
-		long sensorMaxX = yeiDataInstance.getMaxX();
-		long sensorMinX = yeiDataInstance.getMinX();
-		long sensorMaxY = yeiDataInstance.getMaxY();
-		long sensorMinY = yeiDataInstance.getMinY();
-		long sensorMaxZ = yeiDataInstance.getMaxZ();
-		long sensorMinZ = yeiDataInstance.getMinZ();
+//		long sensorMaxX = yeiDataInstance.getMaxX();
+//		long sensorMinX = yeiDataInstance.getMinX();
+//		long sensorMaxY = yeiDataInstance.getMaxY();
+//		long sensorMinY = yeiDataInstance.getMinY();
+//		long sensorMaxZ = yeiDataInstance.getMaxZ();
+//		long sensorMinZ = yeiDataInstance.getMinZ();
 		long positionX, positionY, positionZ;
 		
 		if(jointType.equals("head"))
 		{
 			positionX = mapper.map(
 					x, 
-					sensorMaxX, 
-					sensorMinX, 
+					SensorConfig.HEAD_X_MAX, 
+					SensorConfig.HEAD_X_MIN, 
 					MasterArmsConfig.HEAD_YAW_MAX, 
 					MasterArmsConfig.HEAD_YAW_MIN
 					);
 			
 			positionY = mapper.map(
 					y, 
-					sensorMaxY, 
-					sensorMinY, 
+					SensorConfig.HEAD_Y_MAX, 
+					SensorConfig.HEAD_Y_MIN, 
 					MasterArmsConfig.HEAD_PITCH_MAX, 
 					MasterArmsConfig.HEAD_PITCH_MIN
 					);
@@ -118,30 +120,34 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		}
 		else if(jointType.equals("left_shoulder"))
 		{
+			LOGI(TAG, "ls");
 			positionX = mapper.map(
 					x, 
-					sensorMaxX, 
-					sensorMinX, 
+					SensorConfig.SHOULDER_LEFT_X_MAX, 
+					SensorConfig.SHOULDER_LEFT_X_MIN, 
 					MasterArmsConfig.SHOULDER_LEFT_X_MAX, 
 					MasterArmsConfig.SHOULDER_LEFT_X_MIN
 					);
 			
+			LOGI(TAG, "ls positionX" + String.valueOf(positionX));
 			positionY = mapper.map(
 					y, 
-					sensorMaxY, 
-					sensorMinY, 
+					SensorConfig.SHOULDER_LEFT_Y_MAX, 
+					SensorConfig.SHOULDER_LEFT_Y_MIN, 
 					MasterArmsConfig.SHOULDER_LEFT_Y_MAX, 
 					MasterArmsConfig.SHOULDER_LEFT_Y_MIN
 					);
 			
+			LOGI(TAG, "ls positionY" + String.valueOf(positionY));
 			positionZ = mapper.map(
 					z, 
-					sensorMaxZ, 
-					sensorMinZ, 
+					SensorConfig.SHOULDER_LEFT_Z_MAX, 
+					SensorConfig.SHOULDER_LEFT_Z_MIN, 
 					MasterArmsConfig.SHOULDER_LEFT_Z_MAX, 
 					MasterArmsConfig.SHOULDER_LEFT_Z_MIN
 					);
 			
+			LOGI(TAG, "ls positionZ" + String.valueOf(positionZ));
 			// WRITE X
 			instance.servoId = 20;
 			instance.servoPositon = (int)positionX;
@@ -164,8 +170,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			positionZ = mapper.map(
 					z, 
-					sensorMaxZ, 
-					sensorMinZ, 
+					SensorConfig.ELBOW_LEFT_Z_MAX, 
+					SensorConfig.ELBOW_LEFT_Z_MIN, 
 					MasterArmsConfig.ELBOW_LEFT_Z_MAX, 
 					MasterArmsConfig.ELBOW_LEFT_Z_MIN
 					);
@@ -180,16 +186,16 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			positionX = mapper.map(
 					x, 
-					sensorMaxX, 
-					sensorMinX, 
+					SensorConfig.WRIST_LEFT_X_MAX, 
+					SensorConfig.WRIST_LEFT_X_MIN, 
 					MasterArmsConfig.WRIST_LEFT_X_MAX, 
 					MasterArmsConfig.WRIST_LEFT_X_MIN
 					);
 			
 			positionZ = mapper.map(
 					z, 
-					sensorMaxZ, 
-					sensorMinZ, 
+					SensorConfig.ELBOW_LEFT_Z_MAX, 
+					SensorConfig.ELBOW_LEFT_Z_MIN, 
 					MasterArmsConfig.WRIST_LEFT_Z_MAX, 
 					MasterArmsConfig.WRIST_LEFT_Z_MIN
 					);
@@ -210,24 +216,24 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			positionX = mapper.map(
 					x, 
-					sensorMaxX, 
-					sensorMinX, 
+					SensorConfig.SHOULDER_RIGHT_X_MAX, 
+					SensorConfig.SHOULDER_RIGHT_X_MIN, 
 					MasterArmsConfig.SHOULDER_RIGHT_X_MAX, 
 					MasterArmsConfig.SHOULDER_RIGHT_X_MIN
 					);
 			
 			positionY = mapper.map(
 					y, 
-					sensorMaxY, 
-					sensorMinY, 
+					SensorConfig.SHOULDER_RIGHT_Y_MAX, 
+					SensorConfig.SHOULDER_RIGHT_Y_MIN, 
 					MasterArmsConfig.SHOULDER_RIGHT_Y_MAX, 
 					MasterArmsConfig.SHOULDER_RIGHT_Y_MIN
 					);
 			
 			positionZ = mapper.map(
 					z, 
-					sensorMaxZ, 
-					sensorMinZ, 
+					SensorConfig.SHOULDER_RIGHT_Z_MAX, 
+					SensorConfig.SHOULDER_RIGHT_Z_MIN, 
 					MasterArmsConfig.SHOULDER_RIGHT_Z_MAX, 
 					MasterArmsConfig.SHOULDER_RIGHT_Z_MIN
 					);
@@ -254,8 +260,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			positionZ = mapper.map(
 					z, 
-					sensorMaxZ, 
-					sensorMinZ, 
+					SensorConfig.ELBOW_RIGHT_Z_MAX, 
+					SensorConfig.ELBOW_RIGHT_Z_MIN, 
 					MasterArmsConfig.ELBOW_RIGHT_Z_MAX, 
 					MasterArmsConfig.ELBOW_RIGHT_Z_MIN
 					);
@@ -268,34 +274,30 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		}
 		else if(jointType.equals("right_wrist"))
 		{
-			System.out.println("Here");
 			positionX = mapper.map(
 					x, 
-					sensorMaxX, 
-					sensorMinX, 
+					SensorConfig.WRIST_RIGHT_X_MAX, 
+					SensorConfig.WRIST_RIGHT_X_MIN, 
 					MasterArmsConfig.WRIST_RIGHT_X_MAX, 
 					MasterArmsConfig.WRIST_RIGHT_X_MIN);
 			
-			System.out.println("Here 2 ");
 			positionZ = mapper.map(
 					z, 
-					sensorMaxZ, 
-					sensorMinZ, 
+					SensorConfig.WRIST_RIGHT_Z_MAX, 
+					SensorConfig.WRIST_RIGHT_Z_MIN, 
 					MasterArmsConfig.WRIST_RIGHT_Z_MAX, 
 					MasterArmsConfig.WRIST_RIGHT_Z_MIN);
-			System.out.println("Here 3");
+
 			// WRITE X
 			instance.servoId = 34;
 			instance.servoPositon = (int)positionX;
 			instance.servoSpeed = (int)defaultSpeed;
-			//System.out.println(":::: -" + instance.toString());
 			writer.write(instance, instance_handle);
 			
 			// WRITE Z
 			instance.servoId = 35;
 			instance.servoPositon = (int)positionZ;
 			instance.servoSpeed = (int)defaultSpeed;
-			//System.out.println("==== " + instance.toString());
 			writer.write(instance, instance_handle);
 		}
 //		callbackInterface.callback(yeiDataInstance);

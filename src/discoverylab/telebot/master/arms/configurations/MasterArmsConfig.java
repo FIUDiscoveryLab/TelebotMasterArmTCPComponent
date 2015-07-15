@@ -36,5 +36,4 @@ public class MasterArmsConfig {
 	public static final int WRIST_RIGHT_X_MIN = 1042;
 	public static final int WRIST_RIGHT_Z_MAX = 3072;
 	public static final int WRIST_RIGHT_Z_MIN = 1024;
-	
 }
