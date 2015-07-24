@@ -94,16 +94,16 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					x, 
 					SensorConfig.HEAD_X_MAX, 
 					SensorConfig.HEAD_X_MIN, 
-					MasterArmsConfig.HEAD_YAW_MAX, 
-					MasterArmsConfig.HEAD_YAW_MIN
+					MasterArmsConfig.HEAD_PITCH_MAX, 
+					MasterArmsConfig.HEAD_PITCH_MIN
 					);
 			
 			positionY = mapper.map(
 					y, 
 					SensorConfig.HEAD_Y_MAX, 
 					SensorConfig.HEAD_Y_MIN, 
-					MasterArmsConfig.HEAD_PITCH_MAX, 
-					MasterArmsConfig.HEAD_PITCH_MIN
+					MasterArmsConfig.HEAD_YAW_MAX, 
+					MasterArmsConfig.HEAD_YAW_MIN
 					);
 			
 			// WRITE X
@@ -123,8 +123,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			LOGI(TAG, "ls");
 			positionX = mapper.map(
 					x, 
-					SensorConfig.SHOULDER_LEFT_X_MAX, 
-					SensorConfig.SHOULDER_LEFT_X_MIN, 
+					SensorConfig.SHOULDER_LEFT_Z_MAX, 
+					SensorConfig.SHOULDER_LEFT_Z_MIN, 
 					MasterArmsConfig.SHOULDER_LEFT_X_MAX, 
 					MasterArmsConfig.SHOULDER_LEFT_X_MIN
 					);
@@ -132,8 +132,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			LOGI(TAG, "ls positionX" + String.valueOf(positionX));
 			positionY = mapper.map(
 					y, 
-					SensorConfig.SHOULDER_LEFT_Y_MAX, 
-					SensorConfig.SHOULDER_LEFT_Y_MIN, 
+					SensorConfig.SHOULDER_LEFT_X_MAX, 
+					SensorConfig.SHOULDER_LEFT_X_MIN, 
 					MasterArmsConfig.SHOULDER_LEFT_Y_MAX, 
 					MasterArmsConfig.SHOULDER_LEFT_Y_MIN
 					);
@@ -141,8 +141,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			LOGI(TAG, "ls positionY" + String.valueOf(positionY));
 			positionZ = mapper.map(
 					z, 
-					SensorConfig.SHOULDER_LEFT_Z_MAX, 
-					SensorConfig.SHOULDER_LEFT_Z_MIN, 
+					SensorConfig.SHOULDER_LEFT_Y_MAX, 
+					SensorConfig.SHOULDER_LEFT_Y_MIN, 
 					MasterArmsConfig.SHOULDER_LEFT_Z_MAX, 
 					MasterArmsConfig.SHOULDER_LEFT_Z_MIN
 					);
@@ -150,13 +150,13 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			LOGI(TAG, "ls positionZ" + String.valueOf(positionZ));
 			// WRITE X
 			instance.servoId = 20;
-			instance.servoPositon = (int)positionX;
+			instance.servoPositon = (int)positionY;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			// WRITE Y
 			instance.servoId = 21;
-			instance.servoPositon = (int)positionY;
+			instance.servoPositon = (int)positionX;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
@@ -186,29 +186,29 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			positionX = mapper.map(
 					x, 
-					SensorConfig.WRIST_LEFT_X_MAX, 
-					SensorConfig.WRIST_LEFT_X_MIN, 
+					SensorConfig.WRIST_LEFT_Z_MAX, 
+					SensorConfig.WRIST_LEFT_Z_MIN, 
 					MasterArmsConfig.WRIST_LEFT_X_MAX, 
 					MasterArmsConfig.WRIST_LEFT_X_MIN
 					);
 			
 			positionZ = mapper.map(
 					z, 
-					SensorConfig.ELBOW_LEFT_Z_MAX, 
-					SensorConfig.ELBOW_LEFT_Z_MIN, 
+					SensorConfig.WRIST_LEFT_X_MAX, 
+					SensorConfig.WRIST_LEFT_X_MIN, 
 					MasterArmsConfig.WRIST_LEFT_Z_MAX, 
 					MasterArmsConfig.WRIST_LEFT_Z_MIN
 					);
 			
 			// WRITE X
 			instance.servoId = 24;
-			instance.servoPositon = (int)positionX;
+			instance.servoPositon = (int)positionZ;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			// WRITE Z
 			instance.servoId = 25;
-			instance.servoPositon = (int)positionZ;
+			instance.servoPositon = (int)positionX;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 		}
@@ -216,37 +216,37 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			positionX = mapper.map(
 					x, 
-					SensorConfig.SHOULDER_RIGHT_X_MAX, 
-					SensorConfig.SHOULDER_RIGHT_X_MIN, 
+					SensorConfig.SHOULDER_RIGHT_Z_MAX, 
+					SensorConfig.SHOULDER_RIGHT_Z_MIN, 
 					MasterArmsConfig.SHOULDER_RIGHT_X_MAX, 
 					MasterArmsConfig.SHOULDER_RIGHT_X_MIN
 					);
 			
 			positionY = mapper.map(
 					y, 
-					SensorConfig.SHOULDER_RIGHT_Y_MAX, 
-					SensorConfig.SHOULDER_RIGHT_Y_MIN, 
+					SensorConfig.SHOULDER_RIGHT_X_MAX, 
+					SensorConfig.SHOULDER_RIGHT_X_MIN, 
 					MasterArmsConfig.SHOULDER_RIGHT_Y_MAX, 
 					MasterArmsConfig.SHOULDER_RIGHT_Y_MIN
 					);
 			
 			positionZ = mapper.map(
 					z, 
-					SensorConfig.SHOULDER_RIGHT_Z_MAX, 
-					SensorConfig.SHOULDER_RIGHT_Z_MIN, 
+					SensorConfig.SHOULDER_RIGHT_Y_MAX, 
+					SensorConfig.SHOULDER_RIGHT_Y_MIN, 
 					MasterArmsConfig.SHOULDER_RIGHT_Z_MAX, 
 					MasterArmsConfig.SHOULDER_RIGHT_Z_MIN
 					);
 			
 			// WRITE X
 			instance.servoId = 30;
-			instance.servoPositon = (int)positionX;
+			instance.servoPositon = (int)positionY;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write_untyped(instance, instance_handle);
 			
 			// WRITE Y
 			instance.servoId = 31;
-			instance.servoPositon = (int)positionY;
+			instance.servoPositon = (int)positionX;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write_untyped(instance, instance_handle);
 			
@@ -276,29 +276,101 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			positionX = mapper.map(
 					x, 
-					SensorConfig.WRIST_RIGHT_X_MAX, 
-					SensorConfig.WRIST_RIGHT_X_MIN, 
+					SensorConfig.WRIST_RIGHT_Z_MAX, 
+					SensorConfig.WRIST_RIGHT_Z_MIN, 
 					MasterArmsConfig.WRIST_RIGHT_X_MAX, 
 					MasterArmsConfig.WRIST_RIGHT_X_MIN);
 			
 			positionZ = mapper.map(
 					z, 
-					SensorConfig.WRIST_RIGHT_Z_MAX, 
-					SensorConfig.WRIST_RIGHT_Z_MIN, 
+					SensorConfig.WRIST_RIGHT_X_MAX, 
+					SensorConfig.WRIST_RIGHT_X_MIN, 
 					MasterArmsConfig.WRIST_RIGHT_Z_MAX, 
 					MasterArmsConfig.WRIST_RIGHT_Z_MIN);
 
 			// WRITE X
 			instance.servoId = 34;
-			instance.servoPositon = (int)positionX;
+			instance.servoPositon = (int)positionZ;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			// WRITE Z
 			instance.servoId = 35;
-			instance.servoPositon = (int)positionZ;
+			instance.servoPositon = (int)positionX;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
+		}
+		else if(jointType.equals("null"))
+		{
+			instance.servoId = 10;
+			instance.servoPositon = (int)MasterArmsConfig.HEAD_YAW_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 11;
+			instance.servoPositon = (int)MasterArmsConfig.HEAD_PITCH_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 20;
+			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_LEFT_X_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 21;
+			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_LEFT_Y_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 22;
+			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_LEFT_Z_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 23;
+			instance.servoPositon = (int)MasterArmsConfig.ELBOW_LEFT_Z_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 24;
+			instance.servoPositon = (int)MasterArmsConfig.WRIST_LEFT_X_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 25;
+			instance.servoPositon = (int)MasterArmsConfig.WRIST_LEFT_Z_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 30;
+			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_RIGHT_X_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 31;
+			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_RIGHT_Y_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 32;
+			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_RIGHT_Z_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 33;
+			instance.servoPositon = (int)MasterArmsConfig.ELBOW_LEFT_Z_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 34;
+			instance.servoPositon = (int)MasterArmsConfig.WRIST_RIGHT_X_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 35;
+			instance.servoPositon = (int)MasterArmsConfig.WRIST_RIGHT_Z_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);		
 		}
 //		callbackInterface.callback(yeiDataInstance);
 

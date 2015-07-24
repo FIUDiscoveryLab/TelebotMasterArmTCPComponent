@@ -11,10 +11,22 @@ public class YEIDataParser extends CoreDataParser{
 	public Object parse(String str) {
 		StringTokenizer tokenizer = parseUsingTokenizer(str);
 		YEIDataModel instance = new YEIDataModel();
-		instance.setJointType(tokenizer.nextToken());
-		instance.setX(Long.parseLong(tokenizer.nextToken()));
-		instance.setY(Long.parseLong(tokenizer.nextToken()));
-		instance.setZ(Long.parseLong(tokenizer.nextToken()));
+		
+		if(str.equals("null"))
+		{
+			instance.setJointType(tokenizer.nextToken());
+			instance.setX(-1);
+			instance.setY(-1);
+			instance.setZ(-1);
+		}
+		else
+		{
+			instance.setJointType(tokenizer.nextToken());
+			instance.setX(Long.parseLong(tokenizer.nextToken()));
+			instance.setY(Long.parseLong(tokenizer.nextToken()));
+			instance.setZ(Long.parseLong(tokenizer.nextToken()));
+		}
+
 		return instance;
 	}
 }
