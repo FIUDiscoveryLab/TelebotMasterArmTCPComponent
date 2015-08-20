@@ -24,14 +24,10 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	
 	public static String TAG = makeLogTag(TelebotMasterArmsTCPComponent.class);
 	
-	private CallbackInterface callbackInterface;
 	private YEIDataParser parser;
-//	private YEIDataSynchronizer synchronizer;
 	private ServoDataMapper mapper;
 	
 	private long defaultSpeed = 100;
-	
-	private DDSCommunicator communicator;
 	
 	private TMasterToArmsDataWriter writer;
 	TMasterToArms instance = new TMasterToArms();
@@ -40,7 +36,6 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	public TelebotMasterArmsTCPComponent(int portNumber) {
 		super(portNumber);
 		parser = new YEIDataParser();
-//		synchronizer = new YEIDataSynchronizer();
 		mapper = new ServoDataMapper();
 	}
 	
@@ -52,9 +47,6 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		writer = (TMasterToArmsDataWriter) getDataWriter();
 	}
 	
-//	boolean isSynchronized = false;
-//	int timer = 1000000;
-//	int count = 0;
 	
 	@Override
 	public void callback(String data) {
@@ -62,30 +54,10 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		LOGI(TAG, "DATA: " + data );
 		YEIDataModel yeiDataInstance = (YEIDataModel) parser.parse(data);
 		
-		//NOTE: setDataWriter should be called from the Driver class///
-		
-//		if(isSynchronized)
-//		{
-//			if(count < timer)
-//			{
-//				count = synchronizer.synchronize(yeiDataInstance, count);
-//			}
-//			else
-//			{
-//				isSynchronized = true;
-//			}
-//		}
-		
 		String jointType = yeiDataInstance.getJointType();
 		long x = yeiDataInstance.getX();
 		long y = yeiDataInstance.getY();
 		long z = yeiDataInstance.getZ();
-//		long sensorMaxX = yeiDataInstance.getMaxX();
-//		long sensorMinX = yeiDataInstance.getMinX();
-//		long sensorMaxY = yeiDataInstance.getMaxY();
-//		long sensorMinY = yeiDataInstance.getMinY();
-//		long sensorMaxZ = yeiDataInstance.getMaxZ();
-//		long sensorMinZ = yeiDataInstance.getMinZ();
 		long positionX, positionY, positionZ;
 		
 		if(jointType.equals("head"))
@@ -120,259 +92,265 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		}
 		else if(jointType.equals("left_shoulder"))
 		{
-			LOGI(TAG, "ls");
 			positionX = mapper.map(
-					x, 
-					SensorConfig.SHOULDER_LEFT_Z_MAX, 
-					SensorConfig.SHOULDER_LEFT_Z_MIN, 
-					MasterArmsConfig.SHOULDER_LEFT_X_MAX, 
-					MasterArmsConfig.SHOULDER_LEFT_X_MIN
-					);
-			
-			LOGI(TAG, "ls positionX" + String.valueOf(positionX));
-			positionY = mapper.map(
 					y, 
-					SensorConfig.SHOULDER_LEFT_X_MAX, 
-					SensorConfig.SHOULDER_LEFT_X_MIN, 
-					MasterArmsConfig.SHOULDER_LEFT_Y_MAX, 
-					MasterArmsConfig.SHOULDER_LEFT_Y_MIN
-					);
-			
-			LOGI(TAG, "ls positionY" + String.valueOf(positionY));
-			positionZ = mapper.map(
-					z, 
 					SensorConfig.SHOULDER_LEFT_Y_MAX, 
 					SensorConfig.SHOULDER_LEFT_Y_MIN, 
-					MasterArmsConfig.SHOULDER_LEFT_Z_MAX, 
-					MasterArmsConfig.SHOULDER_LEFT_Z_MIN
+					MasterArmsConfig.ARM_ROLL_LEFT_MAX, 
+					MasterArmsConfig.ARM_ROLL_LEFT_MIN
 					);
 			
-			LOGI(TAG, "ls positionZ" + String.valueOf(positionZ));
+			positionY = mapper.map(
+					x, 
+					SensorConfig.SHOULDER_LEFT_X_MAX, 
+					SensorConfig.SHOULDER_LEFT_X_MIN, 
+					MasterArmsConfig.ARM_PITCH_LEFT_MAX, 
+					MasterArmsConfig.ARM_PITCH_LEFT_MIN
+					);
+			
 			// WRITE X
-			instance.servoId = 20;
-			instance.servoPositon = (int)positionY;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write(instance, instance_handle);
+//			instance.servoId = 20;
+//			instance.servoPositon = (int)positionY;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write(instance, instance_handle);
 			
-			// WRITE Y
-			instance.servoId = 21;
-			instance.servoPositon = (int)positionX;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write(instance, instance_handle);
-			
-			// WRITE Z
-			instance.servoId = 22;
-			instance.servoPositon = (int)positionZ;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write_untyped(instance, instance_handle);
+//			// WRITE Y
+//			instance.servoId = 21; 
+//			instance.servoPositon = (int)positionX;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write(instance, instance_handle);
+
 		}
 		else if(jointType.equals("left_elbow"))
 		{
+			positionX = mapper.map(
+					y, 
+					SensorConfig.ELBOW_LEFT_Y_MAX, 
+					SensorConfig.ELBOW_LEFT_Y_MIN, 
+					MasterArmsConfig.ELBOW_ROLL_LEFT_MAX, 
+					MasterArmsConfig.ELBOW_ROLL_LEFT_MIN
+					);
+			
 			positionZ = mapper.map(
-					z, 
-					SensorConfig.ELBOW_LEFT_Z_MAX, 
-					SensorConfig.ELBOW_LEFT_Z_MIN, 
-					MasterArmsConfig.ELBOW_LEFT_Z_MAX, 
-					MasterArmsConfig.ELBOW_LEFT_Z_MIN
+					x, 
+					SensorConfig.ELBOW_LEFT_X_MAX, 
+					SensorConfig.ELBOW_LEFT_X_MIN, 
+					MasterArmsConfig.ARM_YAW_LEFT_MAX, 
+					MasterArmsConfig.ARM_YAW_LEFT_MIN
 					);
 			
 			// WRITE Z
-			instance.servoId = 23;
-			instance.servoPositon = (int)positionZ;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write(instance, instance_handle);
+//			instance.servoId = 22;
+//			instance.servoPositon = (int)positionZ;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write(instance, instance_handle);
+//			
+//			instance.servoId = 23;
+//			instance.servoPositon = (int)positionX;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write(instance, instance_handle);
 		}
 		else if(jointType.equals("left_wrist"))
 		{
+			
 			positionX = mapper.map(
-					x, 
-					SensorConfig.WRIST_LEFT_Z_MAX, 
-					SensorConfig.WRIST_LEFT_Z_MIN, 
-					MasterArmsConfig.WRIST_LEFT_X_MAX, 
-					MasterArmsConfig.WRIST_LEFT_X_MIN
+					-z, //x
+					SensorConfig.WRIST_LEFT_Y_MAX, 
+					SensorConfig.WRIST_LEFT_Y_MIN, 
+					MasterArmsConfig.WRIST_ROLL_LEFT_MAX, 
+					MasterArmsConfig.WRIST_ROLL_LEFT_MIN
 					);
 			
 			positionZ = mapper.map(
-					z, 
+					x, //100-y
 					SensorConfig.WRIST_LEFT_X_MAX, 
 					SensorConfig.WRIST_LEFT_X_MIN, 
-					MasterArmsConfig.WRIST_LEFT_Z_MAX, 
-					MasterArmsConfig.WRIST_LEFT_Z_MIN
+					MasterArmsConfig.FOREARM_YAW_LEFT_MAX, 
+					MasterArmsConfig.FOREARM_YAW_LEFT_MIN
 					);
 			
 			// WRITE X
-			instance.servoId = 24;
-			instance.servoPositon = (int)positionZ;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write(instance, instance_handle);
+//			instance.servoId = 24;
+//			instance.servoPositon = (int)positionZ;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write(instance, instance_handle);
 			
-			// WRITE Z
-			instance.servoId = 25;
-			instance.servoPositon = (int)positionX;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write(instance, instance_handle);
+//			// WRITE Z
+//			instance.servoId = 25;
+//			instance.servoPositon = (int)positionX;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write(instance, instance_handle);
 		}
 		else if(jointType.equals("right_shoulder"))
 		{
 			positionX = mapper.map(
-					x, 
-					SensorConfig.SHOULDER_RIGHT_Z_MAX, 
-					SensorConfig.SHOULDER_RIGHT_Z_MIN, 
-					MasterArmsConfig.SHOULDER_RIGHT_X_MAX, 
-					MasterArmsConfig.SHOULDER_RIGHT_X_MIN
+					y, 
+					SensorConfig.SHOULDER_RIGHT_Y_MAX, 
+					SensorConfig.SHOULDER_RIGHT_Y_MIN, 
+					MasterArmsConfig.ARM_ROLL_RIGHT_MAX, 
+					MasterArmsConfig.ARM_ROLL_RIGHT_MIN
 					);
 			
 			positionY = mapper.map(
-					y, 
+					180 - x, 
 					SensorConfig.SHOULDER_RIGHT_X_MAX, 
 					SensorConfig.SHOULDER_RIGHT_X_MIN, 
-					MasterArmsConfig.SHOULDER_RIGHT_Y_MAX, 
-					MasterArmsConfig.SHOULDER_RIGHT_Y_MIN
-					);
-			
-			positionZ = mapper.map(
-					z, 
-					SensorConfig.SHOULDER_RIGHT_Y_MAX, 
-					SensorConfig.SHOULDER_RIGHT_Y_MIN, 
-					MasterArmsConfig.SHOULDER_RIGHT_Z_MAX, 
-					MasterArmsConfig.SHOULDER_RIGHT_Z_MIN
+					MasterArmsConfig.ARM_PITCH_RIGHT_MAX, 
+					MasterArmsConfig.ARM_PITCH_RIGHT_MIN
 					);
 			
 			// WRITE X
-			instance.servoId = 30;
-			instance.servoPositon = (int)positionY;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write_untyped(instance, instance_handle);
+//			instance.servoId = 30;
+//			instance.servoPositon = (int)positionY;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write_untyped(instance, instance_handle);
+//			
+//			// WRITE Y
+//			instance.servoId = 31;
+//			instance.servoPositon = (int)positionX;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write_untyped(instance, instance_handle);
 			
-			// WRITE Y
-			instance.servoId = 31;
-			instance.servoPositon = (int)positionX;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write_untyped(instance, instance_handle);
-			
-			// WRITE Z
-			instance.servoId = 32;
-			instance.servoPositon = (int)positionZ;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write_untyped(instance, instance_handle);
 		}
 		else if(jointType.equals("right_elbow"))
 		{
-			positionZ = mapper.map(
-					z, 
-					SensorConfig.ELBOW_RIGHT_Z_MAX, 
-					SensorConfig.ELBOW_RIGHT_Z_MIN, 
-					MasterArmsConfig.ELBOW_RIGHT_Z_MAX, 
-					MasterArmsConfig.ELBOW_RIGHT_Z_MIN
+			positionX = mapper.map(
+					-x, //50 - x
+					SensorConfig.ELBOW_RIGHT_X_MAX, 
+					SensorConfig.ELBOW_RIGHT_X_MIN, 
+					MasterArmsConfig.ELBOW_ROLL_RIGHT_MAX, 
+					MasterArmsConfig.ELBOW_ROLL_RIGHT_MIN
 					);
 			
-			// WRITE Z
-			instance.servoId = 33;
-			instance.servoPositon = (int)positionZ;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write_untyped(instance, instance_handle);
+			positionZ = mapper.map(
+					y, //130 - y
+					SensorConfig.ELBOW_RIGHT_Y_MAX, 
+					SensorConfig.ELBOW_RIGHT_Y_MIN, 
+					MasterArmsConfig.ARM_YAW_RIGHT_MAX, 
+					MasterArmsConfig.ARM_YAW_RIGHT_MIN
+					);
+			
+			//WRITE X
+//			instance.servoId = 32;
+//			instance.servoPositon = (int)positionX;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write_untyped(instance, instance_handle);
+//			
+////			// WRITE Z
+//			instance.servoId = 33;
+//			instance.servoPositon = (int)positionZ;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write_untyped(instance, instance_handle);
 		}
 		else if(jointType.equals("right_wrist"))
 		{
 			positionX = mapper.map(
-					x, 
-					SensorConfig.WRIST_RIGHT_Z_MAX, 
-					SensorConfig.WRIST_RIGHT_Z_MIN, 
-					MasterArmsConfig.WRIST_RIGHT_X_MAX, 
-					MasterArmsConfig.WRIST_RIGHT_X_MIN);
-			
-			positionZ = mapper.map(
-					z, 
+					-z, 
 					SensorConfig.WRIST_RIGHT_X_MAX, 
 					SensorConfig.WRIST_RIGHT_X_MIN, 
-					MasterArmsConfig.WRIST_RIGHT_Z_MAX, 
-					MasterArmsConfig.WRIST_RIGHT_Z_MIN);
-
-			// WRITE X
-			instance.servoId = 34;
-			instance.servoPositon = (int)positionZ;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write(instance, instance_handle);
+					MasterArmsConfig.WRIST_ROLL_RIGHT_MAX, 
+					MasterArmsConfig.WRIST_ROLL_RIGHT_MIN);
 			
+			positionZ = mapper.map(
+					-x, 
+					SensorConfig.WRIST_RIGHT_Y_MAX, 
+					SensorConfig.WRIST_RIGHT_Y_MIN, 
+					MasterArmsConfig.FOREARM_YAW_RIGHT_MAX, 
+					MasterArmsConfig.FOREARM_YAW_RIGHT_MIN);
+
+//			// WRITE X
+//			instance.servoId = 34;
+//			instance.servoPositon = (int)positionZ;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write(instance, instance_handle);
+//		
 			// WRITE Z
-			instance.servoId = 35;
-			instance.servoPositon = (int)positionX;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write(instance, instance_handle);
+//			instance.servoId = 35;
+//			instance.servoPositon = (int)positionX;
+//			instance.servoSpeed = (int)defaultSpeed;
+//			writer.write(instance, instance_handle);
 		}
 		else if(jointType.equals("null"))
 		{
-			instance.servoId = 10;
-			instance.servoPositon = (int)MasterArmsConfig.HEAD_YAW_REST;
-			instance.servoSpeed = (int)defaultSpeed;
-			writer.write(instance, instance_handle);
+			try
+			{
+				Thread.sleep(1000);
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
 			
-			instance.servoId = 11;
+			instance.servoId = 10;
 			instance.servoPositon = (int)MasterArmsConfig.HEAD_PITCH_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
+			instance.servoId = 11;
+			instance.servoPositon = (int)MasterArmsConfig.HEAD_YAW_REST;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
 			instance.servoId = 20;
-			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_LEFT_X_REST;
+			instance.servoPositon = (int)MasterArmsConfig.ARM_PITCH_LEFT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 21;
-			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_LEFT_Y_REST;
+			instance.servoPositon = (int)MasterArmsConfig.ARM_ROLL_LEFT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 22;
-			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_LEFT_Z_REST;
+			instance.servoPositon = (int)MasterArmsConfig.ARM_YAW_LEFT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 23;
-			instance.servoPositon = (int)MasterArmsConfig.ELBOW_LEFT_Z_REST;
+			instance.servoPositon = (int)MasterArmsConfig.ELBOW_ROLL_LEFT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 24;
-			instance.servoPositon = (int)MasterArmsConfig.WRIST_LEFT_X_REST;
+			instance.servoPositon = (int)MasterArmsConfig.FOREARM_YAW_LEFT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 25;
-			instance.servoPositon = (int)MasterArmsConfig.WRIST_LEFT_Z_REST;
+			instance.servoPositon = (int)MasterArmsConfig.WRIST_ROLL_LEFT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 30;
-			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_RIGHT_X_REST;
+			instance.servoPositon = (int)MasterArmsConfig.ARM_PITCH_RIGHT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 31;
-			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_RIGHT_Y_REST;
+			instance.servoPositon = (int)MasterArmsConfig.ARM_ROLL_RIGHT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 32;
-			instance.servoPositon = (int)MasterArmsConfig.SHOULDER_RIGHT_Z_REST;
+			instance.servoPositon = (int)MasterArmsConfig.ARM_YAW_RIGHT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 33;
-			instance.servoPositon = (int)MasterArmsConfig.ELBOW_LEFT_Z_REST;
+			instance.servoPositon = (int)MasterArmsConfig.ELBOW_ROLL_RIGHT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 34;
-			instance.servoPositon = (int)MasterArmsConfig.WRIST_RIGHT_X_REST;
+			instance.servoPositon = (int)MasterArmsConfig.FOREARM_YAW_RIGHT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 35;
-			instance.servoPositon = (int)MasterArmsConfig.WRIST_RIGHT_Z_REST;
+			instance.servoPositon = (int)MasterArmsConfig.WRIST_ROLL_RIGHT_REST;
 			instance.servoSpeed = (int)defaultSpeed;
 			writer.write(instance, instance_handle);		
 		}
-//		callbackInterface.callback(yeiDataInstance);
 
 	}
 

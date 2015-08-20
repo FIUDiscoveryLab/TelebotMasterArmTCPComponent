@@ -9,7 +9,7 @@ public class ServoDataMapper extends Mapper{
 	public long constrain(long val, long servo_max, long servo_min)
 	{
 		long ret = val;
-		LOGI(TAG, "constrain");
+
 		if(val <= servo_min)
 		{
 			ret = servo_min;
@@ -25,10 +25,8 @@ public class ServoDataMapper extends Mapper{
 	@Override
 	public long map(long val, long sensor_max, long sensor_min, long servo_max, long servo_min)
 	{
-		LOGI(TAG, "map: " + val + " , " + sensor_max + " , " + sensor_min + " , " + servo_max + " , " + servo_min );
         long mapped = (val - sensor_min) * (servo_max - servo_min) / (sensor_max - sensor_min) + servo_min;
         
-        LOGI(TAG, "map after " + mapped);
         long constrained =  constrain(mapped, servo_max, servo_min);
         
         return constrained;
