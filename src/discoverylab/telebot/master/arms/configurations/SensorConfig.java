@@ -11,7 +11,7 @@ public class SensorConfig {
 	public static final int SHOULDER_LEFT_Y_MAX = 0; //
 	public static final int SHOULDER_LEFT_Y_MIN = 40; //
 	
-	public static final int SHOULDER_RIGHT_X_MAX = 180;
+	public static final int SHOULDER_RIGHT_X_MAX = 120; //180
 	public static final int SHOULDER_RIGHT_X_MIN = 70;
 	public static final int SHOULDER_RIGHT_Y_MAX = 50; //61
 	public static final int SHOULDER_RIGHT_Y_MIN = 0; //18

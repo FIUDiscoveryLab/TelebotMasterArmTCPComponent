@@ -109,16 +109,16 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			// WRITE X
-//			instance.servoId = 20;
-//			instance.servoPositon = (int)positionY;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write(instance, instance_handle);
+			instance.servoId = 20;
+			instance.servoPositon = (int)positionY;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
 			
 //			// WRITE Y
-//			instance.servoId = 21; 
-//			instance.servoPositon = (int)positionX;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write(instance, instance_handle);
+			instance.servoId = 21; 
+			instance.servoPositon = (int)positionX;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
 
 		}
 		else if(jointType.equals("left_elbow"))
@@ -140,15 +140,15 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			// WRITE Z
-//			instance.servoId = 22;
-//			instance.servoPositon = (int)positionZ;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write(instance, instance_handle);
-//			
-//			instance.servoId = 23;
-//			instance.servoPositon = (int)positionX;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write(instance, instance_handle);
+			instance.servoId = 22;
+			instance.servoPositon = (int)positionZ;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+			
+			instance.servoId = 23;
+			instance.servoPositon = (int)positionX;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
 		}
 		else if(jointType.equals("left_wrist"))
 		{
@@ -170,16 +170,16 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			// WRITE X
-//			instance.servoId = 24;
-//			instance.servoPositon = (int)positionZ;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write(instance, instance_handle);
+			instance.servoId = 24;
+			instance.servoPositon = (int)positionZ;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
 			
 //			// WRITE Z
-//			instance.servoId = 25;
-//			instance.servoPositon = (int)positionX;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write(instance, instance_handle);
+			instance.servoId = 25;
+			instance.servoPositon = (int)positionX;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
 		}
 		else if(jointType.equals("right_shoulder"))
 		{
@@ -192,7 +192,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			positionY = mapper.map(
-					180 - x, 
+					120 - x, 
 					SensorConfig.SHOULDER_RIGHT_X_MAX, 
 					SensorConfig.SHOULDER_RIGHT_X_MIN, 
 					MasterArmsConfig.ARM_PITCH_RIGHT_MAX, 
@@ -200,16 +200,16 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			// WRITE X
-//			instance.servoId = 30;
-//			instance.servoPositon = (int)positionY;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write_untyped(instance, instance_handle);
-//			
-//			// WRITE Y
-//			instance.servoId = 31;
-//			instance.servoPositon = (int)positionX;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write_untyped(instance, instance_handle);
+			instance.servoId = 30;
+			instance.servoPositon = (int)positionY;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+			
+			// WRITE Y
+			instance.servoId = 31;
+			instance.servoPositon = (int)positionX;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
 			
 		}
 		else if(jointType.equals("right_elbow"))
@@ -231,16 +231,16 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			//WRITE X
-//			instance.servoId = 32;
-//			instance.servoPositon = (int)positionX;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write_untyped(instance, instance_handle);
-//			
-////			// WRITE Z
-//			instance.servoId = 33;
-//			instance.servoPositon = (int)positionZ;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write_untyped(instance, instance_handle);
+			instance.servoId = 32;
+			instance.servoPositon = (int)positionX;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
+			
+//			// WRITE Z
+			instance.servoId = 33;
+			instance.servoPositon = (int)positionZ;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write_untyped(instance, instance_handle);
 		}
 		else if(jointType.equals("right_wrist"))
 		{
@@ -259,16 +259,16 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.FOREARM_YAW_RIGHT_MIN);
 
 //			// WRITE X
-//			instance.servoId = 34;
-//			instance.servoPositon = (int)positionZ;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write(instance, instance_handle);
-//		
-			// WRITE Z
-//			instance.servoId = 35;
-//			instance.servoPositon = (int)positionX;
-//			instance.servoSpeed = (int)defaultSpeed;
-//			writer.write(instance, instance_handle);
+			instance.servoId = 34;
+			instance.servoPositon = (int)positionZ;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
+		
+//			 WRITE Z
+			instance.servoId = 35;
+			instance.servoPositon = (int)positionX;
+			instance.servoSpeed = (int)defaultSpeed;
+			writer.write(instance, instance_handle);
 		}
 		else if(jointType.equals("null"))
 		{
