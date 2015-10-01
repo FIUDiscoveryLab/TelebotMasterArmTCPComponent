@@ -16,8 +16,8 @@ public class ServoDataParser extends CoreDataParser {
 		StringTokenizer tokenizer = parseUsingTokenizer(str);
 		ServoDataModel instance = new ServoDataModel();
 		instance.setServoID(Integer.parseInt( tokenizer.nextToken()) );
-		instance.setMax( Long.parseLong(tokenizer.nextToken()) );
-		instance.setMin( Long.parseLong(tokenizer.nextToken()) );
+		instance.setMax( Integer.parseInt(tokenizer.nextToken()) );
+		instance.setMin( Integer.parseInt(tokenizer.nextToken()) );
 		return instance;
 	}
 	

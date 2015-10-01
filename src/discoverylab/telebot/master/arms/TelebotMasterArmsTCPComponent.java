@@ -27,7 +27,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	private YEIDataParser parser;
 	private ServoDataMapper mapper;
 	
-	private long defaultSpeed = 100;
+	private int defaultSpeed = 100;
 	
 	private int[] jointPositions;
 	
@@ -44,7 +44,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		
 		for(int i = 0; i < jointPositions.length; i++)
 		{
-			jointPositions[i] = 0;
+			jointPositions[i] = -1;
 		}
 	}
 	
@@ -55,17 +55,17 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	public void initiateDataWriter(){
 		writer = (TMasterToArmsDataWriter) getDataWriter();
 	}
-	
-	
+
+
 	@Override
-	public void callback(String data) {
+	public synchronized void callback(String data) { //try synchronized
 		
 		LOGI(TAG, "DATA: " + data );
 		YEIDataModel yeiDataInstance = (YEIDataModel) parser.parse(data);
 		
 		String jointType = yeiDataInstance.getJointType();
-		long x, y, z;
-		long servoOnePosition, servoTwoPosition;
+		int x, y, z;
+		int servoOnePosition, servoTwoPosition;
 		
 		if(jointType.equals("head"))
 		{
@@ -91,19 +91,19 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			if(servoOnePosition != jointPositions[0])
 			{
 				instance.servoId = 10;
-				instance.servoPositon = (int)servoOnePosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoOnePosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
-				jointPositions[0] = (int)servoOnePosition;
+				jointPositions[0] = servoOnePosition;
 			}
 
 			if(servoTwoPosition != jointPositions[1])
 			{
 				instance.servoId = 11;
-				instance.servoPositon = (int)servoTwoPosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoTwoPosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
-				jointPositions[1] = (int)servoTwoPosition;
+				jointPositions[1] = servoTwoPosition;
 			}
 		}
 		else if(jointType.equals("left_shoulder"))
@@ -130,19 +130,19 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			if(servoTwoPosition != jointPositions[2])
 			{
 				instance.servoId = 20;
-				instance.servoPositon = (int)servoTwoPosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoTwoPosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
-				jointPositions[2] = (int)servoTwoPosition;
+				jointPositions[2] = servoTwoPosition;
 			}
 			
 			if(servoOnePosition != jointPositions[3])
 			{
 				instance.servoId = 21; 
-				instance.servoPositon = (int)servoOnePosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoOnePosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
-				jointPositions[3] = (int)servoOnePosition;
+				jointPositions[3] = servoOnePosition;
 			}
 		}
 		else if(jointType.equals("left_elbow"))
@@ -169,19 +169,19 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			if(servoTwoPosition != jointPositions[4])
 			{
 				instance.servoId = 22;
-				instance.servoPositon = (int)servoTwoPosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoTwoPosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
-				jointPositions[4] = (int)servoTwoPosition;
+				jointPositions[4] = servoTwoPosition;
 			}
 
 			if(servoOnePosition != jointPositions[5])
 			{
 				instance.servoId = 23;
-				instance.servoPositon = (int)servoOnePosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoOnePosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
-				jointPositions[5] = (int)servoOnePosition;
+				jointPositions[5] = servoOnePosition;
 			}
 		}
 		else if(jointType.equals("left_wrist"))
@@ -208,19 +208,19 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			if(servoTwoPosition != jointPositions[6])
 			{
 				instance.servoId = 24;
-				instance.servoPositon = (int)servoTwoPosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoTwoPosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
-				jointPositions[6] = (int)servoTwoPosition;
+				jointPositions[6] = servoTwoPosition;
 			}
 
 			if(servoOnePosition != jointPositions[7])
 			{
 				instance.servoId = 25;
-				instance.servoPositon = (int)servoOnePosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoOnePosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
-				jointPositions[7] = (int)servoOnePosition;
+				jointPositions[7] = servoOnePosition;
 			}
 		}
 		else if(jointType.equals("right_shoulder"))
@@ -247,19 +247,19 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			if(servoTwoPosition != jointPositions[8])
 			{
 				instance.servoId = 30;
-				instance.servoPositon = (int)servoTwoPosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoTwoPosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write_untyped(instance, instance_handle);
-				jointPositions[8] = (int)servoTwoPosition;
+				jointPositions[8] = servoTwoPosition;
 			}
 
 			if(servoOnePosition != jointPositions[9])
 			{
 				instance.servoId = 31;
-				instance.servoPositon = (int)servoOnePosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoOnePosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write_untyped(instance, instance_handle);
-				jointPositions[9] = (int)servoOnePosition;
+				jointPositions[9] = servoOnePosition;
 			}			
 		}
 		else if(jointType.equals("right_elbow"))
@@ -286,19 +286,19 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			if(servoOnePosition != jointPositions[10])
 			{
 				instance.servoId = 32;
-				instance.servoPositon = (int)servoOnePosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoOnePosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write_untyped(instance, instance_handle);
-				jointPositions[10] = (int)servoOnePosition;
+				jointPositions[10] = servoOnePosition;
 			}
 
 			if(servoTwoPosition != jointPositions[11])
 			{
 				instance.servoId = 33;
-				instance.servoPositon = (int)servoTwoPosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoTwoPosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write_untyped(instance, instance_handle);
-				jointPositions[11] = (int)servoTwoPosition;
+				jointPositions[11] = servoTwoPosition;
 			}
 		}
 		else if(jointType.equals("right_wrist"))
@@ -323,19 +323,19 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			if(servoTwoPosition != jointPositions[12])
 			{
 				instance.servoId = 34;
-				instance.servoPositon = (int)servoTwoPosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoTwoPosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
-				jointPositions[12] = (int)servoTwoPosition;
+				jointPositions[12] = servoTwoPosition;
 			}
 
 			if(servoOnePosition != jointPositions[13])
 			{
 				instance.servoId = 35;
-				instance.servoPositon = (int)servoOnePosition;
-				instance.servoSpeed = (int)defaultSpeed;
+				instance.servoPositon = servoOnePosition;
+				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
-				jointPositions[13] = (int)servoOnePosition;
+				jointPositions[13] = servoOnePosition;
 			}
 		}
 		else if(jointType.equals("null"))
@@ -350,73 +350,73 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			}
 			
 			instance.servoId = 10;
-			instance.servoPositon = (int)MasterArmsConfig.HEAD_PITCH_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.HEAD_PITCH_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 11;
-			instance.servoPositon = (int)MasterArmsConfig.HEAD_YAW_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.HEAD_YAW_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 20;
-			instance.servoPositon = (int)MasterArmsConfig.ARM_PITCH_LEFT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.ARM_PITCH_LEFT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 21;
-			instance.servoPositon = (int)MasterArmsConfig.ARM_ROLL_LEFT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.ARM_ROLL_LEFT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 22;
-			instance.servoPositon = (int)MasterArmsConfig.ARM_YAW_LEFT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.ARM_YAW_LEFT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 23;
-			instance.servoPositon = (int)MasterArmsConfig.ELBOW_ROLL_LEFT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.ELBOW_ROLL_LEFT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 24;
-			instance.servoPositon = (int)MasterArmsConfig.FOREARM_YAW_LEFT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.FOREARM_YAW_LEFT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 25;
-			instance.servoPositon = (int)MasterArmsConfig.WRIST_ROLL_LEFT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.WRIST_ROLL_LEFT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 30;
-			instance.servoPositon = (int)MasterArmsConfig.ARM_PITCH_RIGHT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.ARM_PITCH_RIGHT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 31;
-			instance.servoPositon = (int)MasterArmsConfig.ARM_ROLL_RIGHT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.ARM_ROLL_RIGHT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 32;
-			instance.servoPositon = (int)MasterArmsConfig.ARM_YAW_RIGHT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.ARM_YAW_RIGHT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 33;
-			instance.servoPositon = (int)MasterArmsConfig.ELBOW_ROLL_RIGHT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.ELBOW_ROLL_RIGHT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 34;
-			instance.servoPositon = (int)MasterArmsConfig.FOREARM_YAW_RIGHT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.FOREARM_YAW_RIGHT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);
 			
 			instance.servoId = 35;
-			instance.servoPositon = (int)MasterArmsConfig.WRIST_ROLL_RIGHT_REST;
-			instance.servoSpeed = (int)defaultSpeed;
+			instance.servoPositon = MasterArmsConfig.WRIST_ROLL_RIGHT_REST;
+			instance.servoSpeed = defaultSpeed;
 			writer.write(instance, instance_handle);		
 		}
 

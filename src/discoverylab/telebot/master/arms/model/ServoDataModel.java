@@ -5,7 +5,7 @@ public class ServoDataModel {
 	public ServoDataModel(){
 	}
 	
-	public ServoDataModel(int servoID, long max, long min)
+	public ServoDataModel(int servoID, int max, int min)
 	{
 		this.servoID = servoID;
 		this.max = max;
@@ -18,19 +18,19 @@ public class ServoDataModel {
 	public void setServoID(int servoID) {
 		this.servoID = servoID;
 	}
-	public long getMax() {
+	public int getMax() {
 		return max;
 	}
-	public void setMax(long max) {
+	public void setMax(int max) {
 		this.max = max;
 	}
-	public long getMin() {
+	public int getMin() {
 		return min;
 	}
-	public void setMin(long min) {
+	public void setMin(int min) {
 		this.min = min;
 	}
 	private int servoID;
-	private long max;
-	private long min;
+	private int max;
+	private int min;
 }

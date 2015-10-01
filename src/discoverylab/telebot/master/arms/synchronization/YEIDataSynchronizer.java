@@ -6,12 +6,12 @@ public class YEIDataSynchronizer extends Synchronizer {
 	
 	public YEIDataSynchronizer(){}
 	
-	public void findMaxMin(YEIDataModel instance, long maxX, long minX, 
-			long maxY, long minY, long maxZ, long minZ)
+	public void findMaxMin(YEIDataModel instance, int maxX, int minX, 
+			int maxY, int minY, int maxZ, int minZ)
 	{
-		long x = instance.getX();
-		long y = instance.getY();
-		long z = instance.getZ();
+		int x = instance.getX();
+		int y = instance.getY();
+		int z = instance.getZ();
 		
 		if(x < minX)
 		{
@@ -43,12 +43,12 @@ public class YEIDataSynchronizer extends Synchronizer {
 	
 	public int synchronize(YEIDataModel instance, int count)
 	{
-		long maxX = -360;
-		long minX = 360;
-		long maxY = -360;
-		long minY = 360;
-		long maxZ = -360;
-		long minZ = 360;
+		int maxX = -360;
+		int minX = 360;
+		int maxY = -360;
+		int minY = 360;
+		int maxZ = -360;
+		int minZ = 360;
 		
 		
 		if(instance.getJointType().equals("head"))
@@ -85,8 +85,8 @@ public class YEIDataSynchronizer extends Synchronizer {
 	}
 
 	@Override
-	public void findMaxMin(Object instance, long maxX, long minX, long maxY,
-			long minY, long maxZ, long minZ) {
+	public void findMaxMin(Object instance, int maxX, int minX, int maxY,
+			int minY, int maxZ, int minZ) {
 		// TODO Auto-generated method stub
 		
 	}
