@@ -127,101 +127,85 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.ARM_PITCH_LEFT_MIN
 					);
 			
-			if(servoTwoPosition != jointPositions[2])
-			{
-				instance.servoId = 20;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
-				jointPositions[2] = servoTwoPosition;
-			}
-			
-			if(servoOnePosition != jointPositions[3])
-			{
-				instance.servoId = 21; 
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
-				jointPositions[3] = servoOnePosition;
-			}
+//			if(servoTwoPosition != jointPositions[2])
+//			{
+//				instance.servoId = 20;
+//				instance.servoPositon = servoTwoPosition;
+//				instance.servoSpeed = defaultSpeed;
+//				writer.write(instance, instance_handle);
+//				jointPositions[2] = servoTwoPosition;
+//			}
+//			
+//			if(servoOnePosition != jointPositions[3])
+//			{
+//				instance.servoId = 21; 
+//				instance.servoPositon = servoOnePosition;
+//				instance.servoSpeed = defaultSpeed;
+//				writer.write(instance, instance_handle);
+//				jointPositions[3] = servoOnePosition;
+//			}
 		}
 		else if(jointType.equals("left_elbow"))
 		{
-			x = yeiDataInstance.getX();
-			y = yeiDataInstance.getY();
 			
-			servoOnePosition = mapper.map( 
-					y, 
-					SensorConfig.ELBOW_LEFT_Y_MAX, 
-					SensorConfig.ELBOW_LEFT_Y_MIN, 
-					MasterArmsConfig.ELBOW_ROLL_LEFT_MAX, 
-					MasterArmsConfig.ELBOW_ROLL_LEFT_MIN
+			int flexion = yeiDataInstance.getY();
+			
+			servoOnePosition = mapper.map( //elbow servo
+					flexion, 
+					SensorConfig.LEFT_ELBOW_FLEXION_MAX, 
+					SensorConfig.LEFT_ELBOW_FLEXION_MIN, 
+					MasterArmsConfig.LEFT_ELBOW_MAX, 
+					MasterArmsConfig.LEFT_ELBOW_MIN,
+					MasterArmsConfig.LEFT_ELBOW_REST
 					);
 			
-			servoTwoPosition = mapper.map( 
-					x, 
-					SensorConfig.ELBOW_LEFT_X_MAX, 
-					SensorConfig.ELBOW_LEFT_X_MIN, 
-					MasterArmsConfig.ARM_YAW_LEFT_MAX, 
-					MasterArmsConfig.ARM_YAW_LEFT_MIN
-					);
+			instance.servoId = 23; //elbow servo
+			instance.servoPositon = servoOnePosition;
+			instance.servoSpeed = 150;
+			writer.write(instance, instance_handle);
+			jointPositions[5] = servoOnePosition;
 			
-			if(servoTwoPosition != jointPositions[4])
-			{
-				instance.servoId = 22;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
-				jointPositions[4] = servoTwoPosition;
-			}
-
-			if(servoOnePosition != jointPositions[5])
-			{
-				instance.servoId = 23;
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
-				jointPositions[5] = servoOnePosition;
-			}
+			
 		}
 		else if(jointType.equals("left_wrist"))
 		{
-			x = yeiDataInstance.getX();
-			z = yeiDataInstance.getZ();
+			int forearm_rotation = yeiDataInstance.getX() ;
+			int flexion = yeiDataInstance.getZ() ;
 			
 			servoOnePosition = mapper.map( 
-					-z, //x
-					SensorConfig.WRIST_LEFT_Y_MAX, 
-					SensorConfig.WRIST_LEFT_Y_MIN, 
-					MasterArmsConfig.WRIST_ROLL_LEFT_MAX, 
-					MasterArmsConfig.WRIST_ROLL_LEFT_MIN
+					forearm_rotation, //x
+					SensorConfig.LEFT_FOREARM_ROTATION_MAX, 
+					SensorConfig.LEFT_FOREARM_ROTATION_MIN, 
+					MasterArmsConfig.LEFT_FOREARM_MAX, 
+					MasterArmsConfig.LEFT_FOREARM_MIN,
+					MasterArmsConfig.LEFT_FOREARM_REST
 					);
 			
 			servoTwoPosition = mapper.map( 
-					x, //100-y
-					SensorConfig.WRIST_LEFT_X_MAX, 
-					SensorConfig.WRIST_LEFT_X_MIN, 
-					MasterArmsConfig.FOREARM_YAW_LEFT_MAX, 
-					MasterArmsConfig.FOREARM_YAW_LEFT_MIN
+					flexion , //100-y
+					SensorConfig.LEFT_WRIST_FLEXION_MAX, 
+					SensorConfig.LEFT_WRIST_FLEXION_MIN, 
+					MasterArmsConfig.LEFT_WRIST_MAX, 
+					MasterArmsConfig.LEFT_WRIST_MIN,
+					MasterArmsConfig.LEFT_WRIST_REST
+					
 					);
 			
-			if(servoTwoPosition != jointPositions[6])
-			{
-				instance.servoId = 24;
+				
+			instance.servoId = 25;
 				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
+				instance.servoSpeed = 200;
 				writer.write(instance, instance_handle);
 				jointPositions[6] = servoTwoPosition;
-			}
+			
 
-			if(servoOnePosition != jointPositions[7])
-			{
-				instance.servoId = 25;
+			
+				instance.servoId = 24;
 				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
+				instance.servoSpeed = 200;
 				writer.write(instance, instance_handle);
 				jointPositions[7] = servoOnePosition;
-			}
+			
 		}
 		else if(jointType.equals("right_shoulder"))
 		{
@@ -244,23 +228,23 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.ARM_PITCH_RIGHT_MIN
 					);
 			
-			if(servoTwoPosition != jointPositions[8])
-			{
-				instance.servoId = 30;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write_untyped(instance, instance_handle);
-				jointPositions[8] = servoTwoPosition;
-			}
-
-			if(servoOnePosition != jointPositions[9])
-			{
-				instance.servoId = 31;
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write_untyped(instance, instance_handle);
-				jointPositions[9] = servoOnePosition;
-			}			
+//			if(servoTwoPosition != jointPositions[8])
+//			{
+//				instance.servoId = 30;
+//				instance.servoPositon = servoTwoPosition;
+//				instance.servoSpeed = defaultSpeed;
+//				writer.write_untyped(instance, instance_handle);
+//				jointPositions[8] = servoTwoPosition;
+//			}
+//
+//			if(servoOnePosition != jointPositions[9])
+//			{
+//				instance.servoId = 31;
+//				instance.servoPositon = servoOnePosition;
+//				instance.servoSpeed = defaultSpeed;
+//				writer.write_untyped(instance, instance_handle);
+//				jointPositions[9] = servoOnePosition;
+//			}			
 		}
 		else if(jointType.equals("right_elbow"))
 		{
@@ -283,23 +267,23 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.ARM_YAW_RIGHT_MIN
 					);
 			
-			if(servoOnePosition != jointPositions[10])
-			{
-				instance.servoId = 32;
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write_untyped(instance, instance_handle);
-				jointPositions[10] = servoOnePosition;
-			}
-
-			if(servoTwoPosition != jointPositions[11])
-			{
-				instance.servoId = 33;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write_untyped(instance, instance_handle);
-				jointPositions[11] = servoTwoPosition;
-			}
+//			if(servoOnePosition != jointPositions[10])
+//			{
+//				instance.servoId = 32;
+//				instance.servoPositon = servoOnePosition;
+//				instance.servoSpeed = defaultSpeed;
+//				writer.write_untyped(instance, instance_handle);
+//				jointPositions[10] = servoOnePosition;
+//			}
+//
+//			if(servoTwoPosition != jointPositions[11])
+//			{
+//				instance.servoId = 33;
+//				instance.servoPositon = servoTwoPosition;
+//				instance.servoSpeed = defaultSpeed;
+//				writer.write_untyped(instance, instance_handle);
+//				jointPositions[11] = servoTwoPosition;
+//			}
 		}
 		else if(jointType.equals("right_wrist"))
 		{
@@ -320,23 +304,23 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.FOREARM_YAW_RIGHT_MAX, 
 					MasterArmsConfig.FOREARM_YAW_RIGHT_MIN);
 
-			if(servoTwoPosition != jointPositions[12])
-			{
-				instance.servoId = 34;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
-				jointPositions[12] = servoTwoPosition;
-			}
-
-			if(servoOnePosition != jointPositions[13])
-			{
-				instance.servoId = 35;
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
-				jointPositions[13] = servoOnePosition;
-			}
+//			if(servoTwoPosition != jointPositions[12])
+//			{
+//				instance.servoId = 34;
+//				instance.servoPositon = servoTwoPosition;
+//				instance.servoSpeed = defaultSpeed;
+//				writer.write(instance, instance_handle);
+//				jointPositions[12] = servoTwoPosition;
+//			}
+//
+//			if(servoOnePosition != jointPositions[13])
+//			{
+//				instance.servoId = 35;
+//				instance.servoPositon = servoOnePosition;
+//				instance.servoSpeed = defaultSpeed;
+//				writer.write(instance, instance_handle);
+//				jointPositions[13] = servoOnePosition;
+//			}
 		}
 		else if(jointType.equals("null"))
 		{

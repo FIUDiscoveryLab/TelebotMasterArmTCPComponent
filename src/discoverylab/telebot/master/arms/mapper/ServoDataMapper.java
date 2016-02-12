@@ -33,4 +33,24 @@ public class ServoDataMapper extends Mapper{
         return constrained;
 	}
 	
+	@Override
+	public int map(int val, int sensor_max, int sensor_min, int servo_max, int servo_min, int servo_rest)
+	{
+		double mapped = 0;
+		
+			if( val >= 0 ){
+				mapped = (((servo_max - servo_rest)/ sensor_max) * val) + servo_rest;
+			}
+			else
+			{
+				mapped = servo_rest - ((servo_rest - servo_min)/sensor_min) * val;
+			}
+        
+		
+        int constrained =  constrain((int)mapped, servo_max, servo_min);
+        
+        return (int)mapped;
+	}
+	
+	
 }

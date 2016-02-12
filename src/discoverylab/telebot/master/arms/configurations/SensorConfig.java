@@ -44,5 +44,19 @@ public class SensorConfig {
 	public static final int WRIST_RIGHT_Z_MAX = 117;
 	public static final int WRIST_RIGHT_Z_MIN = -78;
 	
+	/*
+	 * Made by manu
+	 */
+	
+	public static final int LEFT_ELBOW_FLEXION_MAX = 95;
+	public static final int LEFT_ELBOW_FLEXION_MIN = 0;
+	
+	public static final int LEFT_FOREARM_ROTATION_MAX = 40;
+	public static final int LEFT_FOREARM_ROTATION_MIN = -80;
+	
+	public static final int LEFT_WRIST_FLEXION_MAX = 60;
+	public static final int LEFT_WRIST_FLEXION_MIN = -85;
+	
+	
 
 }

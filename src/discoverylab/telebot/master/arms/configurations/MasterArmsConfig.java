@@ -61,4 +61,20 @@ public class MasterArmsConfig {
 	public static final int WRIST_ROLL_LEFT_REST = 2048;
 	
 	public static final int WRIST_ROLL_RIGHT_REST = 2048;
+	
+	/*
+	 * Test values!
+	 */
+	public static final int LEFT_WRIST_MAX = 2700;
+	public static final int LEFT_WRIST_MIN = 1600;
+	public static final int LEFT_WRIST_REST = 2010;
+	
+	public static final int LEFT_FOREARM_MAX = 4050;
+	public static final int LEFT_FOREARM_MIN = 2650;
+	public static final int LEFT_FOREARM_REST = 2965;
+	
+	public static final int LEFT_ELBOW_MAX = 3072;
+	public static final int LEFT_ELBOW_MIN = 2048;
+	public static final int LEFT_ELBOW_REST = 2048;
+	
 }
