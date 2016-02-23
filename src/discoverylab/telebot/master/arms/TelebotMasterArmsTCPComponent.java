@@ -4,18 +4,11 @@ import static discoverylab.util.logging.LogUtils.*;
 import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
 import discoverylab.telebot.master.arms.configurations.SensorConfig;
 import discoverylab.telebot.master.arms.mapper.ServoDataMapper;
-//import discoverylab.telebot.master.arms.model.ServoDataModel;
-
 import com.rti.dds.infrastructure.InstanceHandle_t;
-import com.rti.dds.publication.DataWriterImpl;
-
-import TelebotDDSCore.DDSCommunicator;
 import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArms;
 import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArmsDataWriter;
 import discoverylab.telebot.master.arms.model.YEIDataModel;
-//import discoverylab.telebot.master.arms.parser.ServoDataParser;
 import discoverylab.telebot.master.arms.parser.YEIDataParser;
-//import discoverylab.telebot.master.arms.synchronization.YEIDataSynchronizer;
 import discoverylab.telebot.master.core.component.CoreMasterTCPComponent;
 import discoverylab.telebot.master.core.socket.CoreServerSocket;
 
@@ -96,7 +89,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
 				jointPositions[0] = servoOnePosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoTwoPosition != jointPositions[1])
@@ -106,7 +99,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
 				jointPositions[1] = servoTwoPosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("left_shoulder"))
@@ -137,7 +130,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
 				jointPositions[2] = servoTwoPosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 			
 			if(servoOnePosition != jointPositions[3])
@@ -147,7 +140,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
 				jointPositions[3] = servoOnePosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("left_elbow"))
@@ -178,7 +171,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
 				jointPositions[4] = servoTwoPosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoOnePosition != jointPositions[5])
@@ -188,7 +181,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
 				jointPositions[5] = servoOnePosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("left_wrist"))
@@ -219,7 +212,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
 				jointPositions[6] = servoTwoPosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoOnePosition != jointPositions[7])
@@ -229,7 +222,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
 				jointPositions[7] = servoOnePosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("right_shoulder"))
@@ -258,9 +251,9 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoId = 30;
 				instance.servoPositon = servoTwoPosition;
 				instance.servoSpeed = defaultSpeed;
-				writer.write_untyped(instance, instance_handle);
+				writer.write(instance, instance_handle);
 				jointPositions[8] = servoTwoPosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoOnePosition != jointPositions[9])
@@ -268,9 +261,9 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoId = 31;
 				instance.servoPositon = servoOnePosition;
 				instance.servoSpeed = defaultSpeed;
-				writer.write_untyped(instance, instance_handle);
+				writer.write(instance, instance_handle);
 				jointPositions[9] = servoOnePosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}			
 		}
 		else if(jointType.equals("right_elbow"))
@@ -299,9 +292,9 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoId = 32;
 				instance.servoPositon = servoOnePosition;
 				instance.servoSpeed = defaultSpeed;
-				writer.write_untyped(instance, instance_handle);
+				writer.write(instance, instance_handle);
 				jointPositions[10] = servoOnePosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoTwoPosition != jointPositions[11])
@@ -309,9 +302,9 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoId = 33;
 				instance.servoPositon = servoTwoPosition;
 				instance.servoSpeed = defaultSpeed;
-				writer.write_untyped(instance, instance_handle);
+				writer.write(instance, instance_handle);
 				jointPositions[11] = servoTwoPosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("right_wrist"))
@@ -340,7 +333,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
 				jointPositions[12] = servoTwoPosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoOnePosition != jointPositions[13])
@@ -350,7 +343,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				instance.servoSpeed = defaultSpeed;
 				writer.write(instance, instance_handle);
 				jointPositions[13] = servoOnePosition;
-				System.out.println(instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("null"))

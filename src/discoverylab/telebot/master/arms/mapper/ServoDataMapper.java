@@ -1,8 +1,6 @@
 package discoverylab.telebot.master.arms.mapper;
 
 import static discoverylab.util.logging.LogUtils.*;
-import discoverylab.telebot.master.arms.TelebotMasterArmsTCPComponent;
-import discoverylab.telebot.master.arms.model.YEIDataModel;
 
 public class ServoDataMapper extends Mapper{
 	public static String TAG = makeLogTag(ServoDataMapper.class);
