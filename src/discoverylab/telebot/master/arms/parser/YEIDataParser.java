@@ -5,10 +5,11 @@ import java.util.StringTokenizer;
 import discoverylab.telebot.master.arms.model.YEIDataModel;
 import discoverylab.telebot.master.core.parser.CoreDataParser;
 
-public class YEIDataParser extends CoreDataParser{
-
+public class YEIDataParser extends CoreDataParser
+{
 	@Override
-	public Object parse(String str) {
+	public Object parse(String str) 
+	{
 		StringTokenizer tokenizer = parseUsingTokenizer(str);
 		YEIDataModel instance = new YEIDataModel();
 		

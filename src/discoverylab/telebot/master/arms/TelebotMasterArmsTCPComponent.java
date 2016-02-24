@@ -28,7 +28,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	TMasterToArms instance = new TMasterToArms();
 	InstanceHandle_t instance_handle = InstanceHandle_t.HANDLE_NIL;
 	
-	public TelebotMasterArmsTCPComponent(int portNumber) {
+	public TelebotMasterArmsTCPComponent(int portNumber) 
+	{
 		super(portNumber);
 		parser = new YEIDataParser();
 		mapper = new ServoDataMapper();
@@ -49,23 +50,21 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		writer = (TMasterToArmsDataWriter) getDataWriter();
 	}
 
-
-	@Override
-	public void callback(String data) { //try synchronized
-		
-//		LOGI(TAG, "DATA: " + data );
-		YEIDataModel yeiDataInstance = (YEIDataModel) parser.parse(data);
-		
-		String jointType = yeiDataInstance.getJointType();
-		int x, y, z;
+	public void writeServoData(int servoID, int servoPosition, int servoSpeed)
+	{
+		instance.servoId = servoID;
+		instance.servoPositon = servoPosition;
+		instance.servoSpeed = servoSpeed;
+		writer.write(instance, instance_handle);
+		LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+	}
+	
+	public void generatePositions(String jointType, int x, int y, int z)
+	{
 		int servoOnePosition, servoTwoPosition;
-		
 		
 		if(jointType.equals("head"))
 		{
-			x = yeiDataInstance.getX();
-			y = yeiDataInstance.getY();
-			
 			servoOnePosition = mapper.map(
 					x, 
 					SensorConfig.HEAD_X_MAX, 
@@ -84,29 +83,18 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoOnePosition != jointPositions[0])
 			{
-				instance.servoId = 10;
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(10, servoOnePosition, defaultSpeed);
 				jointPositions[0] = servoOnePosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoTwoPosition != jointPositions[1])
 			{
-				instance.servoId = 11;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(11, servoTwoPosition, defaultSpeed);
 				jointPositions[1] = servoTwoPosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("left_shoulder"))
 		{
-			x = yeiDataInstance.getX();
-			y = yeiDataInstance.getY();
-			
 			servoOnePosition = mapper.map( 
 					y, 
 					SensorConfig.SHOULDER_LEFT_Y_MAX, 
@@ -125,29 +113,18 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoTwoPosition != jointPositions[2])
 			{
-				instance.servoId = 20;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(20, servoTwoPosition, defaultSpeed);
 				jointPositions[2] = servoTwoPosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 			
 			if(servoOnePosition != jointPositions[3])
 			{
-				instance.servoId = 21; 
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(21, servoOnePosition, defaultSpeed);
 				jointPositions[3] = servoOnePosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("left_elbow"))
 		{
-			x = yeiDataInstance.getX();
-			y = yeiDataInstance.getY();
-			
 			servoOnePosition = mapper.map( 
 					y, 
 					SensorConfig.ELBOW_LEFT_Y_MAX, 
@@ -166,29 +143,18 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoTwoPosition != jointPositions[4])
 			{
-				instance.servoId = 22;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(22, servoTwoPosition, defaultSpeed);
 				jointPositions[4] = servoTwoPosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoOnePosition != jointPositions[5])
 			{
-				instance.servoId = 23;
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(23, servoOnePosition, defaultSpeed);
 				jointPositions[5] = servoOnePosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("left_wrist"))
 		{
-			x = yeiDataInstance.getX();
-			z = yeiDataInstance.getZ();
-			
 			servoOnePosition = mapper.map( 
 					-z, //x
 					SensorConfig.WRIST_LEFT_Y_MAX, 
@@ -207,29 +173,18 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoTwoPosition != jointPositions[6])
 			{
-				instance.servoId = 24;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(24, servoTwoPosition, defaultSpeed);
 				jointPositions[6] = servoTwoPosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoOnePosition != jointPositions[7])
 			{
-				instance.servoId = 25;
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(25, servoOnePosition, defaultSpeed);
 				jointPositions[7] = servoOnePosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("right_shoulder"))
 		{
-			x = yeiDataInstance.getX();
-			y = yeiDataInstance.getY();
-			
 			servoOnePosition = mapper.map( 
 					y, 
 					SensorConfig.SHOULDER_RIGHT_Y_MAX, 
@@ -248,29 +203,18 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoTwoPosition != jointPositions[8])
 			{
-				instance.servoId = 30;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(30, servoTwoPosition, defaultSpeed);
 				jointPositions[8] = servoTwoPosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoOnePosition != jointPositions[9])
 			{
-				instance.servoId = 31;
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(31, servoOnePosition, defaultSpeed);
 				jointPositions[9] = servoOnePosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}			
 		}
 		else if(jointType.equals("right_elbow"))
 		{
-			x = yeiDataInstance.getX();
-			y = yeiDataInstance.getY();
-			
 			servoOnePosition = mapper.map( 
 					-x, //50 - x
 					SensorConfig.ELBOW_RIGHT_X_MAX, 
@@ -289,29 +233,18 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoOnePosition != jointPositions[10])
 			{
-				instance.servoId = 32;
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(32, servoOnePosition, defaultSpeed);
 				jointPositions[10] = servoOnePosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoTwoPosition != jointPositions[11])
 			{
-				instance.servoId = 33;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(33, servoTwoPosition, defaultSpeed);
 				jointPositions[11] = servoTwoPosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("right_wrist"))
 		{
-			x = yeiDataInstance.getX();
-			z = yeiDataInstance.getZ();
-			
 			servoOnePosition = mapper.map( 
 					-z, 
 					SensorConfig.WRIST_RIGHT_X_MAX, 
@@ -328,22 +261,14 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 
 			if(servoTwoPosition != jointPositions[12])
 			{
-				instance.servoId = 34;
-				instance.servoPositon = servoTwoPosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(34, servoTwoPosition, defaultSpeed);
 				jointPositions[12] = servoTwoPosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 
 			if(servoOnePosition != jointPositions[13])
 			{
-				instance.servoId = 35;
-				instance.servoPositon = servoOnePosition;
-				instance.servoSpeed = defaultSpeed;
-				writer.write(instance, instance_handle);
+				writeServoData(35, servoOnePosition, defaultSpeed);
 				jointPositions[13] = servoOnePosition;
-				LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
 			}
 		}
 		else if(jointType.equals("null"))
@@ -357,77 +282,50 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				e.printStackTrace();
 			}
 			
-			instance.servoId = 10;
-			instance.servoPositon = MasterArmsConfig.HEAD_PITCH_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
+			writeServoData(10, MasterArmsConfig.HEAD_PITCH_REST, defaultSpeed);
 			
-			instance.servoId = 11;
-			instance.servoPositon = MasterArmsConfig.HEAD_YAW_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
+			writeServoData(11, MasterArmsConfig.HEAD_YAW_REST, defaultSpeed);
 			
-			instance.servoId = 20;
-			instance.servoPositon = MasterArmsConfig.ARM_PITCH_LEFT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
+			writeServoData(20, MasterArmsConfig.ARM_PITCH_LEFT_REST, defaultSpeed);
+
+			writeServoData(21, MasterArmsConfig.ARM_ROLL_LEFT_REST, defaultSpeed);
 			
-			instance.servoId = 21;
-			instance.servoPositon = MasterArmsConfig.ARM_ROLL_LEFT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
+			writeServoData(22, MasterArmsConfig.ARM_YAW_LEFT_REST, defaultSpeed);
 			
-			instance.servoId = 22;
-			instance.servoPositon = MasterArmsConfig.ARM_YAW_LEFT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
+			writeServoData(23, MasterArmsConfig.ELBOW_ROLL_LEFT_REST, defaultSpeed);
 			
-			instance.servoId = 23;
-			instance.servoPositon = MasterArmsConfig.ELBOW_ROLL_LEFT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
+			writeServoData(24, MasterArmsConfig.FOREARM_YAW_LEFT_REST, defaultSpeed);
+
+			writeServoData(25, MasterArmsConfig.WRIST_ROLL_LEFT_REST, defaultSpeed);
+
+			writeServoData(30, MasterArmsConfig.ARM_PITCH_RIGHT_REST, defaultSpeed);
 			
-			instance.servoId = 24;
-			instance.servoPositon = MasterArmsConfig.FOREARM_YAW_LEFT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
-			
-			instance.servoId = 25;
-			instance.servoPositon = MasterArmsConfig.WRIST_ROLL_LEFT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
-			
-			instance.servoId = 30;
-			instance.servoPositon = MasterArmsConfig.ARM_PITCH_RIGHT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
-			
-			instance.servoId = 31;
-			instance.servoPositon = MasterArmsConfig.ARM_ROLL_RIGHT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
-			
-			instance.servoId = 32;
-			instance.servoPositon = MasterArmsConfig.ARM_YAW_RIGHT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
-			
-			instance.servoId = 33;
-			instance.servoPositon = MasterArmsConfig.ELBOW_ROLL_RIGHT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
-			
-			instance.servoId = 34;
-			instance.servoPositon = MasterArmsConfig.FOREARM_YAW_RIGHT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);
-			
-			instance.servoId = 35;
-			instance.servoPositon = MasterArmsConfig.WRIST_ROLL_RIGHT_REST;
-			instance.servoSpeed = defaultSpeed;
-			writer.write(instance, instance_handle);		
+			writeServoData(31, MasterArmsConfig.ARM_ROLL_RIGHT_REST, defaultSpeed);
+
+			writeServoData(32, MasterArmsConfig.ARM_YAW_RIGHT_REST, defaultSpeed);
+
+			writeServoData(33, MasterArmsConfig.ELBOW_ROLL_RIGHT_REST, defaultSpeed);
+
+			writeServoData(34, MasterArmsConfig.FOREARM_YAW_RIGHT_REST, defaultSpeed);
+
+			writeServoData(35, MasterArmsConfig.WRIST_ROLL_RIGHT_REST, defaultSpeed);		
 		}
 
+
+	}
+	
+	@Override
+	public void callback(String data) { //try synchronized
+		
+//		LOGI(TAG, "DATA: " + data );
+		YEIDataModel yeiDataInstance = (YEIDataModel) parser.parse(data);
+		
+		String jointType = yeiDataInstance.getJointType();
+		int x = yeiDataInstance.getX();
+		int y = yeiDataInstance.getY();
+		int z = yeiDataInstance.getZ();
+		
+		generatePositions(jointType, x, y, z);
 	}
 
 	/**
