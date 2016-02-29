@@ -57,6 +57,40 @@ public class SensorConfig {
 	public static final int LEFT_WRIST_FLEXION_MAX = 60;
 	public static final int LEFT_WRIST_FLEXION_MIN = -85;
 	
+	public static final int LEFT_SHOULDER_ROTATION_MAX = 30;
+	public static final int LEFT_SHOULDER_ROTATION_MIN = -40;
+	
+	public static final int LEFT_SHOULDER_FLEXION_MAX = 60;
+	public static final int LEFT_SHOULDER_FLEXION_MIN = 0;
+	
+	public static final int LEFT_SHOULDER_ADDUCTION_MAX = 80;
+	public static final int LEFT_SHOULDER_ADDUCTION_MIN = 0;
+	
+	/****************************************************************************
+	 * Right side
+	 ****************************************************************************/
+	
+	public static final int RIGHT_ELBOW_FLEXION_MAX = 65;
+	public static final int RIGHT_ELBOW_FLEXION_MIN = 0;
+	
+	public static final int RIGHT_FOREARM_ROTATION_MAX = 130;
+	public static final int RIGHT_FOREARM_ROTATION_MIN = -40;
+	
+	public static final int RIGHT_WRIST_FLEXION_MAX = 60;
+	public static final int RIGHT_WRIST_FLEXION_MIN = -85;
+	
+	public static final int RIGHT_SHOULDER_ROTATION_MAX = 30;
+	public static final int RIGHT_SHOULDER_ROTATION_MIN = -40;
+	
+	public static final int RIGHT_SHOULDER_FLEXION_MAX = 70;
+	public static final int RIGHT_SHOULDER_FLEXION_MIN = 0;
+	
+	public static final int RIGHT_SHOULDER_ADDUCTION_MAX = 70;
+	public static final int RIGHT_SHOULDER_ADDUCTION_MIN = 0;
+	
+	public static final int MAX= 90;
+	public static final int MIN = 0;
+	
 	
 
 }
