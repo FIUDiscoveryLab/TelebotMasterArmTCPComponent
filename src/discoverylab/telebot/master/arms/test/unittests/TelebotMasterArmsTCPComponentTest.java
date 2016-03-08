@@ -1,30 +1,97 @@
 package discoverylab.telebot.master.arms.test.unittests;
 
 import static org.junit.Assert.*;
-import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
-import discoverylab.telebot.master.arms.configurations.SensorConfig;
-import discoverylab.telebot.master.arms.mapper.ServoDataMapper;
-import com.rti.dds.infrastructure.InstanceHandle_t;
-import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArms;
-import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArmsDataWriter;
-import discoverylab.telebot.master.arms.model.YEIDataModel;
-import discoverylab.telebot.master.arms.parser.YEIDataParser;
-import discoverylab.telebot.master.core.component.CoreMasterTCPComponent;
-import discoverylab.telebot.master.core.socket.CoreServerSocket;
-import discoverylab.telebot.master.arms.TelebotMasterArmsTCPComponent;
 
+import java.io.IOException;
+import java.net.Socket;
+
+import discoverylab.telebot.master.arms.TelebotMasterArmsTCPComponent;
+import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController;
+import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPView;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TelebotMasterArmsTCPComponentTest {
+import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArms;
+import TelebotDDSCore.Source.Java.Generated.master.arms.TOPIC_MASTER_TO_SLAVE_ARMS;
 
-	int dummyPort = 6666;
+public class TelebotMasterArmsTCPComponentTest {
 	
-	TelebotMasterArmsTCPComponent telebotMasterArms = new TelebotMasterArmsTCPComponent(dummyPort);
+	static String portName = "127.0.0.1";
+	static int dummyPort = 8888;
+	
+	String data = "head 30 60 -1";
+	int servoID = 10;
+	int servoPosition = 3600;
+	int servoSpeed = 100;
+	int[] jointPositions = {2081, 2434, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+	
+	TelebotMasterArmsTCPComponent telebotMasterArms;
+	TelebotMasterArmsTCPController controller;
+	TelebotMasterArmsTCPView view;
+	
+	@BeforeClass
+	public static void onceExecutedBeforeAll()
+	{
+		Socket dummyClient;
+		
+		try
+		{
+			dummyClient = new Socket(portName, dummyPort);
+		}
+		catch(IOException e)
+		{
+			System.out.println(e);
+		}
+	}
+	
+			
+	public void activate()
+	{
+		
+		controller = new TelebotMasterArmsTCPController(view);
+		telebotMasterArms = new TelebotMasterArmsTCPComponent(dummyPort, controller);
+		telebotMasterArms.initiate();
+		telebotMasterArms.initiateTransmissionProtocol(TOPIC_MASTER_TO_SLAVE_ARMS.VALUE
+				, TMasterToArms.class);
+		telebotMasterArms.initiateDataWriter();
+	}
+	
+	@Test
+	public void testWriteServoData() 
+	{
+		activate();
+		String instanceData = servoID + " " + servoPosition + " " + servoSpeed;
+		assertEquals(instanceData, telebotMasterArms.writeServoData(servoID, servoPosition, servoSpeed));
+		System.out.println("Test writeServoData()");
+	}
+	
+	@Test
+	public void testGeneratePositions() 
+	{
+		String jointType = "head";
+		int x = 30;
+		int y = 60;
+		int z = -1;
+		
+		activate();
+		
+		telebotMasterArms.generatePositions(jointType, x, y, z);
+		
+		assertArrayEquals(jointPositions, telebotMasterArms.getJointPositions());
+		System.out.println("Test generatePositions()");
+	}
 	
 	@Test
 	public void testCallback() 
 	{
-		assertArrayEquals();
+		activate();
+		
+		telebotMasterArms.callback(data);
+		
+		assertArrayEquals(jointPositions, telebotMasterArms.getJointPositions());
+		System.out.println("Test callback()");
 	}
 
 }
+

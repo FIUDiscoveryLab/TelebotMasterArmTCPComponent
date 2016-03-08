@@ -7,15 +7,15 @@ public class ServoDataMapper extends Mapper
 	public static String TAG = makeLogTag(ServoDataMapper.class);
 	
 	@Override
-	public int constrain(int val, int servo_max, int servo_min)
+	public int constrain(int servo_val, int servo_max, int servo_min)
 	{
-		int pos = val;
+		int pos = servo_val;
 
-		if(val <= servo_min)
+		if(servo_val <= servo_min)
 		{
 			pos = servo_min;
 		}
-		else if(val >= servo_max)
+		else if(servo_val >= servo_max)
 		{
 			pos = servo_max;
 		}
@@ -25,17 +25,19 @@ public class ServoDataMapper extends Mapper
 	
 	
 	@Override
-	public int map(int val, int sensor_max, int sensor_min, int servo_max, int servo_min)
+	public int map(int sensor_val, int sensor_max, int sensor_min, int servo_max, int servo_min)
 	{	
-        return (val - sensor_min) * (servo_max - servo_min) / (sensor_max - sensor_min) + servo_min;
+        return (sensor_val - sensor_min) * (servo_max - servo_min) / (sensor_max - sensor_min) + servo_min;
 	}
 	
 	
-	public int process(int val, int sensor_max, int sensor_min, int servo_max, int servo_min)
+	public int process(int sensor_val, int sensor_max, int sensor_min, int servo_max, int servo_min)
 	{
-		int mapped = map(val, sensor_max, sensor_min, servo_max, servo_min); 
+		int mapped = map(sensor_val, sensor_max, sensor_min, servo_max, servo_min); 
 		
-		return constrain(mapped, servo_max, servo_min);
+		int position = constrain(mapped, servo_max, servo_min);
+		
+		return position;
 	}
 	
 }

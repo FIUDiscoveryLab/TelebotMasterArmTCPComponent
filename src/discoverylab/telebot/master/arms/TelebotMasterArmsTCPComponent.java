@@ -3,6 +3,8 @@ package discoverylab.telebot.master.arms;
 import static discoverylab.util.logging.LogUtils.*;
 import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
 import discoverylab.telebot.master.arms.configurations.SensorConfig;
+import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController;
+import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPView;
 import discoverylab.telebot.master.arms.mapper.ServoDataMapper;
 import com.rti.dds.infrastructure.InstanceHandle_t;
 import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArms;
@@ -25,14 +27,18 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	private int[] jointPositions;
 	
 	private TMasterToArmsDataWriter writer;
+	private TelebotMasterArmsTCPView view;
+	private TelebotMasterArmsTCPController controller;
+	
 	TMasterToArms instance = new TMasterToArms();
 	InstanceHandle_t instance_handle = InstanceHandle_t.HANDLE_NIL;
 	
-	public TelebotMasterArmsTCPComponent(int portNumber) 
+	public TelebotMasterArmsTCPComponent(int portNumber, TelebotMasterArmsTCPController controller) 
 	{
 		super(portNumber);
 		parser = new YEIDataParser();
 		mapper = new ServoDataMapper();
+		this.controller = controller;
 		
 		jointPositions = new int[14];
 		
@@ -42,6 +48,10 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		}
 	}
 	
+	public int[] getJointPositions()
+	{
+		return jointPositions;
+	}
 	/**
 	 * Cast the Writer to our Arms DataWriter
 	 * This allows us to publish the appropriate Topic data
@@ -50,22 +60,25 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		writer = (TMasterToArmsDataWriter) getDataWriter();
 	}
 
-	public void writeServoData(int servoID, int servoPosition, int servoSpeed)
+	public String writeServoData(int servoID, int servoPosition, int servoSpeed)
 	{
 		instance.servoId = servoID;
 		instance.servoPositon = servoPosition;
 		instance.servoSpeed = servoSpeed;
 		writer.write(instance, instance_handle);
-		LOGI(TAG, instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed);
+		String data = instance.servoId + " " + instance.servoPositon + " " + instance.servoSpeed;
+		
+		return data;
 	}
 	
 	public void generatePositions(String jointType, int x, int y, int z)
 	{
+		String data;
 		int servoOnePosition, servoTwoPosition;
 		
 		if(jointType.equals("head"))
 		{
-			servoOnePosition = mapper.map(
+			servoOnePosition = mapper.process(
 					x, 
 					SensorConfig.HEAD_X_MAX, 
 					SensorConfig.HEAD_X_MIN, 
@@ -73,7 +86,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.HEAD_PITCH_MIN
 					);
 			
-			servoTwoPosition = mapper.map(
+			servoTwoPosition = mapper.process(
 					y, 
 					SensorConfig.HEAD_Y_MAX, 
 					SensorConfig.HEAD_Y_MIN, 
@@ -83,19 +96,21 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoOnePosition != jointPositions[0])
 			{
-				writeServoData(10, servoOnePosition, defaultSpeed);
+				data = writeServoData(10, servoOnePosition, defaultSpeed);
 				jointPositions[0] = servoOnePosition;
+				LOGI(TAG, data);
 			}
 
 			if(servoTwoPosition != jointPositions[1])
 			{
-				writeServoData(11, servoTwoPosition, defaultSpeed);
+				data = writeServoData(11, servoTwoPosition, defaultSpeed);
 				jointPositions[1] = servoTwoPosition;
+				LOGI(TAG, data);
 			}
 		}
 		else if(jointType.equals("left_shoulder"))
 		{
-			servoOnePosition = mapper.map( 
+			servoOnePosition = mapper.process( 
 					y, 
 					SensorConfig.SHOULDER_LEFT_Y_MAX, 
 					SensorConfig.SHOULDER_LEFT_Y_MIN, 
@@ -103,7 +118,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.ARM_ROLL_LEFT_MIN
 					);
 			
-			servoTwoPosition = mapper.map( 
+			servoTwoPosition = mapper.process( 
 					x, 
 					SensorConfig.SHOULDER_LEFT_X_MAX, 
 					SensorConfig.SHOULDER_LEFT_X_MIN, 
@@ -113,19 +128,21 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoTwoPosition != jointPositions[2])
 			{
-				writeServoData(20, servoTwoPosition, defaultSpeed);
+				data = writeServoData(20, servoTwoPosition, defaultSpeed);
 				jointPositions[2] = servoTwoPosition;
+				LOGI(TAG, data);
 			}
 			
 			if(servoOnePosition != jointPositions[3])
 			{
-				writeServoData(21, servoOnePosition, defaultSpeed);
+				data = writeServoData(21, servoOnePosition, defaultSpeed);
 				jointPositions[3] = servoOnePosition;
+				LOGI(TAG, data);
 			}
 		}
 		else if(jointType.equals("left_elbow"))
 		{
-			servoOnePosition = mapper.map( 
+			servoOnePosition = mapper.process( 
 					y, 
 					SensorConfig.ELBOW_LEFT_Y_MAX, 
 					SensorConfig.ELBOW_LEFT_Y_MIN, 
@@ -133,7 +150,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.ELBOW_ROLL_LEFT_MIN
 					);
 			
-			servoTwoPosition = mapper.map( 
+			servoTwoPosition = mapper.process( 
 					x, 
 					SensorConfig.ELBOW_LEFT_X_MAX, 
 					SensorConfig.ELBOW_LEFT_X_MIN, 
@@ -143,19 +160,21 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoTwoPosition != jointPositions[4])
 			{
-				writeServoData(22, servoTwoPosition, defaultSpeed);
+				data = writeServoData(22, servoTwoPosition, defaultSpeed);
 				jointPositions[4] = servoTwoPosition;
+				LOGI(TAG, data);
 			}
 
 			if(servoOnePosition != jointPositions[5])
 			{
-				writeServoData(23, servoOnePosition, defaultSpeed);
+				data = writeServoData(23, servoOnePosition, defaultSpeed);
 				jointPositions[5] = servoOnePosition;
+				LOGI(TAG, data);
 			}
 		}
 		else if(jointType.equals("left_wrist"))
 		{
-			servoOnePosition = mapper.map( 
+			servoOnePosition = mapper.process( 
 					-z, //x
 					SensorConfig.WRIST_LEFT_Y_MAX, 
 					SensorConfig.WRIST_LEFT_Y_MIN, 
@@ -163,7 +182,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.WRIST_ROLL_LEFT_MIN
 					);
 			
-			servoTwoPosition = mapper.map( 
+			servoTwoPosition = mapper.process( 
 					x, //100-y
 					SensorConfig.WRIST_LEFT_X_MAX, 
 					SensorConfig.WRIST_LEFT_X_MIN, 
@@ -173,19 +192,21 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoTwoPosition != jointPositions[6])
 			{
-				writeServoData(24, servoTwoPosition, defaultSpeed);
+				data = writeServoData(24, servoTwoPosition, defaultSpeed);
 				jointPositions[6] = servoTwoPosition;
+				LOGI(TAG, data);
 			}
 
 			if(servoOnePosition != jointPositions[7])
 			{
-				writeServoData(25, servoOnePosition, defaultSpeed);
+				data = writeServoData(25, servoOnePosition, defaultSpeed);
 				jointPositions[7] = servoOnePosition;
+				LOGI(TAG, data);
 			}
 		}
 		else if(jointType.equals("right_shoulder"))
 		{
-			servoOnePosition = mapper.map( 
+			servoOnePosition = mapper.process( 
 					y, 
 					SensorConfig.SHOULDER_RIGHT_Y_MAX, 
 					SensorConfig.SHOULDER_RIGHT_Y_MIN, 
@@ -193,7 +214,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.ARM_ROLL_RIGHT_MIN
 					);
 			
-			servoTwoPosition = mapper.map(
+			servoTwoPosition = mapper.process(
 					120 - x, 
 					SensorConfig.SHOULDER_RIGHT_X_MAX, 
 					SensorConfig.SHOULDER_RIGHT_X_MIN, 
@@ -203,19 +224,21 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoTwoPosition != jointPositions[8])
 			{
-				writeServoData(30, servoTwoPosition, defaultSpeed);
+				data = writeServoData(30, servoTwoPosition, defaultSpeed);
 				jointPositions[8] = servoTwoPosition;
+				LOGI(TAG, data);
 			}
 
 			if(servoOnePosition != jointPositions[9])
 			{
-				writeServoData(31, servoOnePosition, defaultSpeed);
+				data = writeServoData(31, servoOnePosition, defaultSpeed);
 				jointPositions[9] = servoOnePosition;
+				LOGI(TAG, data);
 			}			
 		}
 		else if(jointType.equals("right_elbow"))
 		{
-			servoOnePosition = mapper.map( 
+			servoOnePosition = mapper.process( 
 					-x, //50 - x
 					SensorConfig.ELBOW_RIGHT_X_MAX, 
 					SensorConfig.ELBOW_RIGHT_X_MIN, 
@@ -223,7 +246,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.ELBOW_ROLL_RIGHT_MIN
 					);
 			
-			servoTwoPosition = mapper.map( 
+			servoTwoPosition = mapper.process( 
 					y, //130 - y
 					SensorConfig.ELBOW_RIGHT_Y_MAX, 
 					SensorConfig.ELBOW_RIGHT_Y_MIN, 
@@ -233,26 +256,28 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			if(servoOnePosition != jointPositions[10])
 			{
-				writeServoData(32, servoOnePosition, defaultSpeed);
+				data = writeServoData(32, servoOnePosition, defaultSpeed);
 				jointPositions[10] = servoOnePosition;
+				LOGI(TAG, data);
 			}
 
 			if(servoTwoPosition != jointPositions[11])
 			{
-				writeServoData(33, servoTwoPosition, defaultSpeed);
+				data = writeServoData(33, servoTwoPosition, defaultSpeed);
 				jointPositions[11] = servoTwoPosition;
+				LOGI(TAG, data);
 			}
 		}
 		else if(jointType.equals("right_wrist"))
 		{
-			servoOnePosition = mapper.map( 
+			servoOnePosition = mapper.process( 
 					-z, 
 					SensorConfig.WRIST_RIGHT_X_MAX, 
 					SensorConfig.WRIST_RIGHT_X_MIN, 
 					MasterArmsConfig.WRIST_ROLL_RIGHT_MAX, 
 					MasterArmsConfig.WRIST_ROLL_RIGHT_MIN);
 			
-			servoTwoPosition = mapper.map( 
+			servoTwoPosition = mapper.process( 
 					-x, 
 					SensorConfig.WRIST_RIGHT_Y_MAX, 
 					SensorConfig.WRIST_RIGHT_Y_MIN, 
@@ -261,14 +286,16 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 
 			if(servoTwoPosition != jointPositions[12])
 			{
-				writeServoData(34, servoTwoPosition, defaultSpeed);
+				data = writeServoData(34, servoTwoPosition, defaultSpeed);
 				jointPositions[12] = servoTwoPosition;
+				LOGI(TAG, data);
 			}
 
 			if(servoOnePosition != jointPositions[13])
 			{
-				writeServoData(35, servoOnePosition, defaultSpeed);
+				data = writeServoData(35, servoOnePosition, defaultSpeed);
 				jointPositions[13] = servoOnePosition;
+				LOGI(TAG, data);
 			}
 		}
 		else if(jointType.equals("null"))
@@ -282,36 +309,21 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				e.printStackTrace();
 			}
 			
-			writeServoData(10, MasterArmsConfig.HEAD_PITCH_REST, defaultSpeed);
-			
-			writeServoData(11, MasterArmsConfig.HEAD_YAW_REST, defaultSpeed);
-			
-			writeServoData(20, MasterArmsConfig.ARM_PITCH_LEFT_REST, defaultSpeed);
-
-			writeServoData(21, MasterArmsConfig.ARM_ROLL_LEFT_REST, defaultSpeed);
-			
-			writeServoData(22, MasterArmsConfig.ARM_YAW_LEFT_REST, defaultSpeed);
-			
-			writeServoData(23, MasterArmsConfig.ELBOW_ROLL_LEFT_REST, defaultSpeed);
-			
-			writeServoData(24, MasterArmsConfig.FOREARM_YAW_LEFT_REST, defaultSpeed);
-
-			writeServoData(25, MasterArmsConfig.WRIST_ROLL_LEFT_REST, defaultSpeed);
-
-			writeServoData(30, MasterArmsConfig.ARM_PITCH_RIGHT_REST, defaultSpeed);
-			
-			writeServoData(31, MasterArmsConfig.ARM_ROLL_RIGHT_REST, defaultSpeed);
-
-			writeServoData(32, MasterArmsConfig.ARM_YAW_RIGHT_REST, defaultSpeed);
-
-			writeServoData(33, MasterArmsConfig.ELBOW_ROLL_RIGHT_REST, defaultSpeed);
-
-			writeServoData(34, MasterArmsConfig.FOREARM_YAW_RIGHT_REST, defaultSpeed);
-
-			writeServoData(35, MasterArmsConfig.WRIST_ROLL_RIGHT_REST, defaultSpeed);		
+			LOGI(TAG, writeServoData(10, MasterArmsConfig.HEAD_PITCH_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(11, MasterArmsConfig.HEAD_YAW_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(20, MasterArmsConfig.ARM_PITCH_LEFT_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(21, MasterArmsConfig.ARM_ROLL_LEFT_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(22, MasterArmsConfig.ARM_YAW_LEFT_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(23, MasterArmsConfig.ELBOW_ROLL_LEFT_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(24, MasterArmsConfig.FOREARM_YAW_LEFT_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(25, MasterArmsConfig.WRIST_ROLL_LEFT_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(30, MasterArmsConfig.ARM_PITCH_RIGHT_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(31, MasterArmsConfig.ARM_ROLL_RIGHT_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(32, MasterArmsConfig.ARM_YAW_RIGHT_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(33, MasterArmsConfig.ELBOW_ROLL_RIGHT_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(34, MasterArmsConfig.FOREARM_YAW_RIGHT_REST, defaultSpeed));
+			LOGI(TAG, writeServoData(35, MasterArmsConfig.WRIST_ROLL_RIGHT_REST, defaultSpeed));		
 		}
-
-
 	}
 	
 	@Override
@@ -320,11 +332,14 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 //		LOGI(TAG, "DATA: " + data );
 		YEIDataModel yeiDataInstance = (YEIDataModel) parser.parse(data);
 		
-		String jointType = yeiDataInstance.getJointType();
-		int x = yeiDataInstance.getX();
-		int y = yeiDataInstance.getY();
-		int z = yeiDataInstance.getZ();
+		int x, y, z = -1;
 		
+		String jointType = yeiDataInstance.getJointType();
+		x = yeiDataInstance.getX();
+		y = yeiDataInstance.getY();
+		z = yeiDataInstance.getZ();
+		
+		controller.changeText(jointType, x, y, z);
 		generatePositions(jointType, x, y, z);
 	}
 
