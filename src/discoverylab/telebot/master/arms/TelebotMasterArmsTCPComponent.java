@@ -83,7 +83,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					SensorConfig.HEAD_X_MAX, 
 					SensorConfig.HEAD_X_MIN, 
 					MasterArmsConfig.HEAD_PITCH_MAX, 
-					MasterArmsConfig.HEAD_PITCH_MIN
+					MasterArmsConfig.HEAD_PITCH_MIN,
+					true
 					);
 			
 			servoTwoPosition = mapper.process(
@@ -91,7 +92,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					SensorConfig.HEAD_Y_MAX, 
 					SensorConfig.HEAD_Y_MIN, 
 					MasterArmsConfig.HEAD_YAW_MAX, 
-					MasterArmsConfig.HEAD_YAW_MIN
+					MasterArmsConfig.HEAD_YAW_MIN,
+					false
 					);
 			
 			if(servoOnePosition != jointPositions[0])
@@ -115,7 +117,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					SensorConfig.SHOULDER_LEFT_Y_MAX, 
 					SensorConfig.SHOULDER_LEFT_Y_MIN, 
 					MasterArmsConfig.ARM_ROLL_LEFT_MAX, 
-					MasterArmsConfig.ARM_ROLL_LEFT_MIN
+					MasterArmsConfig.ARM_ROLL_LEFT_MIN,
+					false
 					);
 			
 			servoTwoPosition = mapper.process( 
@@ -123,7 +126,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					SensorConfig.SHOULDER_LEFT_X_MAX, 
 					SensorConfig.SHOULDER_LEFT_X_MIN, 
 					MasterArmsConfig.ARM_PITCH_LEFT_MAX, 
-					MasterArmsConfig.ARM_PITCH_LEFT_MIN
+					MasterArmsConfig.ARM_PITCH_LEFT_MIN,
+					false
 					);
 			
 			if(servoTwoPosition != jointPositions[2])
@@ -147,7 +151,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					SensorConfig.ELBOW_LEFT_Y_MAX, 
 					SensorConfig.ELBOW_LEFT_Y_MIN, 
 					MasterArmsConfig.ELBOW_ROLL_LEFT_MAX, 
-					MasterArmsConfig.ELBOW_ROLL_LEFT_MIN
+					MasterArmsConfig.ELBOW_ROLL_LEFT_MIN,
+					true
 					);
 			
 			servoTwoPosition = mapper.process( 
@@ -155,7 +160,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					SensorConfig.ELBOW_LEFT_X_MAX, 
 					SensorConfig.ELBOW_LEFT_X_MIN, 
 					MasterArmsConfig.ARM_YAW_LEFT_MAX, 
-					MasterArmsConfig.ARM_YAW_LEFT_MIN
+					MasterArmsConfig.ARM_YAW_LEFT_MIN,
+					false
 					);
 			
 			if(servoTwoPosition != jointPositions[4])
@@ -175,11 +181,12 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		else if(jointType.equals("left_wrist"))
 		{
 			servoOnePosition = mapper.process( 
-					-z, //x
+					z, 
 					SensorConfig.WRIST_LEFT_Y_MAX, 
 					SensorConfig.WRIST_LEFT_Y_MIN, 
 					MasterArmsConfig.WRIST_ROLL_LEFT_MAX, 
-					MasterArmsConfig.WRIST_ROLL_LEFT_MIN
+					MasterArmsConfig.WRIST_ROLL_LEFT_MIN,
+					false
 					);
 			
 			servoTwoPosition = mapper.process( 
@@ -187,7 +194,8 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					SensorConfig.WRIST_LEFT_X_MAX, 
 					SensorConfig.WRIST_LEFT_X_MIN, 
 					MasterArmsConfig.FOREARM_YAW_LEFT_MAX, 
-					MasterArmsConfig.FOREARM_YAW_LEFT_MIN
+					MasterArmsConfig.FOREARM_YAW_LEFT_MIN,
+					false
 					);
 			
 			if(servoTwoPosition != jointPositions[6])
@@ -211,15 +219,17 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					SensorConfig.SHOULDER_RIGHT_Y_MAX, 
 					SensorConfig.SHOULDER_RIGHT_Y_MIN, 
 					MasterArmsConfig.ARM_ROLL_RIGHT_MAX, 
-					MasterArmsConfig.ARM_ROLL_RIGHT_MIN
+					MasterArmsConfig.ARM_ROLL_RIGHT_MIN,
+					false
 					);
 			
 			servoTwoPosition = mapper.process(
-					120 - x, 
+					x, 
 					SensorConfig.SHOULDER_RIGHT_X_MAX, 
 					SensorConfig.SHOULDER_RIGHT_X_MIN, 
 					MasterArmsConfig.ARM_PITCH_RIGHT_MAX, 
-					MasterArmsConfig.ARM_PITCH_RIGHT_MIN
+					MasterArmsConfig.ARM_PITCH_RIGHT_MIN,
+					true
 					);
 			
 			if(servoTwoPosition != jointPositions[8])
@@ -239,50 +249,56 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		else if(jointType.equals("right_elbow"))
 		{
 			servoOnePosition = mapper.process( 
-					-x, //50 - x
-					SensorConfig.ELBOW_RIGHT_X_MAX, 
-					SensorConfig.ELBOW_RIGHT_X_MIN, 
+					y, //50 - x
+					SensorConfig.ELBOW_RIGHT_Y_MAX, 
+					SensorConfig.ELBOW_RIGHT_Y_MIN, 
 					MasterArmsConfig.ELBOW_ROLL_RIGHT_MAX, 
-					MasterArmsConfig.ELBOW_ROLL_RIGHT_MIN
+					MasterArmsConfig.ELBOW_ROLL_RIGHT_MIN,
+					true
 					);
 			
 			servoTwoPosition = mapper.process( 
-					y, //130 - y
-					SensorConfig.ELBOW_RIGHT_Y_MAX, 
-					SensorConfig.ELBOW_RIGHT_Y_MIN, 
+					x, //130 - y
+					SensorConfig.ELBOW_RIGHT_X_MAX, 
+					SensorConfig.ELBOW_RIGHT_X_MIN, 
 					MasterArmsConfig.ARM_YAW_RIGHT_MAX, 
-					MasterArmsConfig.ARM_YAW_RIGHT_MIN
+					MasterArmsConfig.ARM_YAW_RIGHT_MIN,
+					false
 					);
 			
-			if(servoOnePosition != jointPositions[10])
+			if(servoTwoPosition != jointPositions[10])
 			{
-				data = writeServoData(32, servoOnePosition, defaultSpeed);
-				jointPositions[10] = servoOnePosition;
+				data = writeServoData(32, servoTwoPosition, defaultSpeed);
+				jointPositions[10] = servoTwoPosition;
 				LOGI(TAG, data);
 			}
 
-			if(servoTwoPosition != jointPositions[11])
+			if(servoOnePosition != jointPositions[11])
 			{
-				data = writeServoData(33, servoTwoPosition, defaultSpeed);
-				jointPositions[11] = servoTwoPosition;
+				data = writeServoData(33, servoOnePosition, defaultSpeed);
+				jointPositions[11] = servoOnePosition;
 				LOGI(TAG, data);
 			}
 		}
 		else if(jointType.equals("right_wrist"))
 		{
 			servoOnePosition = mapper.process( 
-					-z, 
-					SensorConfig.WRIST_RIGHT_X_MAX, 
-					SensorConfig.WRIST_RIGHT_X_MIN, 
-					MasterArmsConfig.WRIST_ROLL_RIGHT_MAX, 
-					MasterArmsConfig.WRIST_ROLL_RIGHT_MIN);
-			
-			servoTwoPosition = mapper.process( 
-					-x, 
+					z, 
 					SensorConfig.WRIST_RIGHT_Y_MAX, 
 					SensorConfig.WRIST_RIGHT_Y_MIN, 
+					MasterArmsConfig.WRIST_ROLL_RIGHT_MAX, 
+					MasterArmsConfig.WRIST_ROLL_RIGHT_MIN,
+					false
+					);
+			
+			servoTwoPosition = mapper.process( 
+					x, 
+					SensorConfig.WRIST_RIGHT_X_MAX, 
+					SensorConfig.WRIST_RIGHT_X_MIN, 
 					MasterArmsConfig.FOREARM_YAW_RIGHT_MAX, 
-					MasterArmsConfig.FOREARM_YAW_RIGHT_MIN);
+					MasterArmsConfig.FOREARM_YAW_RIGHT_MIN,
+					true
+					);
 
 			if(servoTwoPosition != jointPositions[12])
 			{

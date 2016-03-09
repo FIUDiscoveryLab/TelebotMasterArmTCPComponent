@@ -30,10 +30,19 @@ public class ServoDataMapper extends Mapper
         return (sensor_val - sensor_min) * (servo_max - servo_min) / (sensor_max - sensor_min) + servo_min;
 	}
 	
+	public int mapInvert(int sensor_val, int sensor_max, int sensor_min, int servo_max, int servo_min)
+	{	
+        return servo_max - ((sensor_val - sensor_min) * (servo_max - servo_min) / (sensor_max - sensor_min));
+	}
 	
-	public int process(int sensor_val, int sensor_max, int sensor_min, int servo_max, int servo_min)
+	
+	public int process(int sensor_val, int sensor_max, int sensor_min, int servo_max, int servo_min, boolean invert)
 	{
-		int mapped = map(sensor_val, sensor_max, sensor_min, servo_max, servo_min); 
+		int mapped = 0;
+		if(invert)
+			mapped = mapInvert(sensor_val, sensor_max, sensor_min, servo_max, servo_min);
+		else
+			mapped = map(sensor_val, sensor_max, sensor_min, servo_max, servo_min); 
 		
 		int position = constrain(mapped, servo_max, servo_min);
 		
