@@ -24,7 +24,7 @@ public class ServoDataMapperTest
 		System.out.println("Tested constrain()");
 	}
 	
-	public void testMap()
+	/*public void testMap()
 	{
 		assertEquals(2081, servoDataMapper.map(sensor_val, sensor_max, sensor_min, servo_max, servo_min));
 		System.out.println("Tested map()");
@@ -34,6 +34,6 @@ public class ServoDataMapperTest
 	{
 		assertEquals(2081, servoDataMapper.process(sensor_val, sensor_max, sensor_min, servo_max, servo_min));
 		System.out.println("Tested process()");
-	}
+	}*/
 
 }

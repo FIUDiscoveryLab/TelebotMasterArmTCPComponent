@@ -24,14 +24,38 @@ public class ServoDataMapperTestA extends TestCase {
 		controller = null;
 	}
 	
-	public void servoDataMapperElbow(){
-		controller.callback("<left_elbow 15 64 0>");
-		controller.callback("<left_elbow 0 0 0>");
-		controller.callback("<left_elbow 0 98 0>");
-		controller.callback("<left_elbow 0 -70 0>");
-		controller.callback("<left_elbow 0 -1 0>");
-		controller.callback("<left_elbow 0 350 0>");
+	public void testServoDataMapperElbowValid(){
+		controller.generatePositions("left_elbow", 0, 0, 0);
+		controller.generatePositions("left_elbow", 0, 15, 0);
+		controller.generatePositions("left_elbow", 0, 30, 0);
+		controller.generatePositions("left_elbow", 0, 45, 0);
+		controller.generatePositions("left_elbow", 0, 60, 0);
+		controller.generatePositions("left_elbow", 0, 75, 0);
+		controller.generatePositions("left_elbow", 0, 90, 0);
 	}
 	
+	public void testServoDataMapperElbowInvalid(){
+		controller.generatePositions("left_elbow", 0, -1, 0);
+		controller.generatePositions("left_elbow", 0, -90, 0);
+		controller.generatePositions("left_elbow", 0, 91, 0);
+		controller.generatePositions("left_elbow", 0, 179, 0);
+	}
+	
+	public void testServoDataMapperShoulderValid(){
+		controller.generatePositions("right_shoulder", 0, 0, 0);
+		controller.generatePositions("right_shoulder", 0, 15, 0);
+		controller.generatePositions("right_shoulder", 0, 30, 0);
+		controller.generatePositions("right_shoulder", 0, 45, 0);
+		controller.generatePositions("right_shoulder", 0, 60, 0);
+		controller.generatePositions("right_shoulder", 0, 75, 0);
+		controller.generatePositions("right_shoulder", 0, 90, 0);
+	}
+	
+	public void testServoDataMapperShoulderInvalid(){
+		controller.generatePositions("right_shoulder", 0, -1, 0);
+		controller.generatePositions("right_shoulder", 0, -90, 0);
+		controller.generatePositions("right_shoulder", 0, 91, 0);
+		controller.generatePositions("right_shoulder", 0, 179, 0);
+	}
 
 }

@@ -26,10 +26,10 @@ public class ServoDataMapper //extends Mapper
 	public int process(int sensorAngle, double servoSensorRatio, int servoMax, int servoMin, boolean invert)
 	{
 		int mapped = 0;
-		if(invert)
-			mapped = (int)(servoMax - sensorAngle * servoSensorRatio);
+		if(invert == true)
+			mapped = (int)(servoMax - (sensorAngle*servoSensorRatio));
 		else
-			mapped = (int)(sensorAngle * servoSensorRatio + servoMin); 
+			mapped = (int)((sensorAngle*servoSensorRatio) + servoMin); 
 		
 		int position = constrain(mapped, servoMax, servoMin);
 		

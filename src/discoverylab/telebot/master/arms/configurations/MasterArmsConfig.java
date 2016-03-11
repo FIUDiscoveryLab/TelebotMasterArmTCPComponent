@@ -62,7 +62,7 @@ public class MasterArmsConfig {
 	
 	public static final int WRIST_ROLL_RIGHT_REST = 2048;
 	
-	public static final double SERVO_SENSOR_RATIO = 4096/180;
+	public static final double SERVO_SENSOR_RATIO = 4096.0/360; //11.377777778;
 	
-	public static final double GEARED_SERVO_SENSOR_RATIO = (4096/180) * (36/60);
+	public static final double GEARED_SERVO_SENSOR_RATIO = (4096.0/360)*(60.0/36); //18.962962963;
 }
