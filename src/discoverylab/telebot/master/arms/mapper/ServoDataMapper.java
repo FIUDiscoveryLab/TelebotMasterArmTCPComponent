@@ -2,11 +2,11 @@ package discoverylab.telebot.master.arms.mapper;
 
 import static discoverylab.util.logging.LogUtils.*;
 
-public class ServoDataMapper extends Mapper
+public class ServoDataMapper //extends Mapper
 {
 	public static String TAG = makeLogTag(ServoDataMapper.class);
 	
-	@Override
+	//@Override
 	public int constrain(int servo_val, int servo_max, int servo_min)
 	{
 		int pos = servo_val;
@@ -23,28 +23,15 @@ public class ServoDataMapper extends Mapper
 		return pos;
 	}
 	
-	
-	@Override
-	public int map(int sensor_val, int sensor_max, int sensor_min, int servo_max, int servo_min)
-	{	
-        return (sensor_val - sensor_min) * (servo_max - servo_min) / (sensor_max - sensor_min) + servo_min;
-	}
-	
-	public int mapInvert(int sensor_val, int sensor_max, int sensor_min, int servo_max, int servo_min)
-	{	
-        return servo_max - ((sensor_val - sensor_min) * (servo_max - servo_min) / (sensor_max - sensor_min));
-	}
-	
-	
-	public int process(int sensor_val, int sensor_max, int sensor_min, int servo_max, int servo_min, boolean invert)
+	public int process(int sensorAngle, double servoSensorRatio, int servoMax, int servoMin, boolean invert)
 	{
 		int mapped = 0;
 		if(invert)
-			mapped = mapInvert(sensor_val, sensor_max, sensor_min, servo_max, servo_min);
+			mapped = (int)(servoMax - sensorAngle * servoSensorRatio);
 		else
-			mapped = map(sensor_val, sensor_max, sensor_min, servo_max, servo_min); 
+			mapped = (int)(sensorAngle * servoSensorRatio + servoMin); 
 		
-		int position = constrain(mapped, servo_max, servo_min);
+		int position = constrain(mapped, servoMax, servoMin);
 		
 		return position;
 	}

@@ -2,9 +2,9 @@ package discoverylab.telebot.master.arms;
 
 import static discoverylab.util.logging.LogUtils.*;
 import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
-import discoverylab.telebot.master.arms.configurations.SensorConfig;
+//import discoverylab.telebot.master.arms.configurations.SensorConfig;
 import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController;
-import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPView;
+//import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPView;
 import discoverylab.telebot.master.arms.mapper.ServoDataMapper;
 import com.rti.dds.infrastructure.InstanceHandle_t;
 import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArms;
@@ -27,7 +27,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	private int[] jointPositions;
 	
 	private TMasterToArmsDataWriter writer;
-	private TelebotMasterArmsTCPView view;
+	//private TelebotMasterArmsTCPView view;
 	private TelebotMasterArmsTCPController controller;
 	
 	TMasterToArms instance = new TMasterToArms();
@@ -80,8 +80,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			servoOnePosition = mapper.process(
 					x, 
-					SensorConfig.HEAD_X_MAX, 
-					SensorConfig.HEAD_X_MIN, 
+					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.HEAD_PITCH_MAX, 
 					MasterArmsConfig.HEAD_PITCH_MIN,
 					true
@@ -89,8 +88,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			servoTwoPosition = mapper.process(
 					y, 
-					SensorConfig.HEAD_Y_MAX, 
-					SensorConfig.HEAD_Y_MIN, 
+					MasterArmsConfig.SERVO_SENSOR_RATIO,
 					MasterArmsConfig.HEAD_YAW_MAX, 
 					MasterArmsConfig.HEAD_YAW_MIN,
 					false
@@ -114,8 +112,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			servoOnePosition = mapper.process( 
 					y, 
-					SensorConfig.SHOULDER_LEFT_Y_MAX, 
-					SensorConfig.SHOULDER_LEFT_Y_MIN, 
+					MasterArmsConfig.GEARED_SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_ROLL_LEFT_MAX, 
 					MasterArmsConfig.ARM_ROLL_LEFT_MIN,
 					false
@@ -123,8 +120,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			servoTwoPosition = mapper.process( 
 					x, 
-					SensorConfig.SHOULDER_LEFT_X_MAX, 
-					SensorConfig.SHOULDER_LEFT_X_MIN, 
+					MasterArmsConfig.GEARED_SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_PITCH_LEFT_MAX, 
 					MasterArmsConfig.ARM_PITCH_LEFT_MIN,
 					false
@@ -148,17 +144,15 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			servoOnePosition = mapper.process( 
 					y, 
-					SensorConfig.ELBOW_LEFT_Y_MAX, 
-					SensorConfig.ELBOW_LEFT_Y_MIN, 
+					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ELBOW_ROLL_LEFT_MAX, 
 					MasterArmsConfig.ELBOW_ROLL_LEFT_MIN,
-					true
+					false
 					);
 			
 			servoTwoPosition = mapper.process( 
 					x, 
-					SensorConfig.ELBOW_LEFT_X_MAX, 
-					SensorConfig.ELBOW_LEFT_X_MIN, 
+					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_YAW_LEFT_MAX, 
 					MasterArmsConfig.ARM_YAW_LEFT_MIN,
 					false
@@ -182,8 +176,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			servoOnePosition = mapper.process( 
 					z, 
-					SensorConfig.WRIST_LEFT_Y_MAX, 
-					SensorConfig.WRIST_LEFT_Y_MIN, 
+					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.WRIST_ROLL_LEFT_MAX, 
 					MasterArmsConfig.WRIST_ROLL_LEFT_MIN,
 					false
@@ -191,8 +184,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			servoTwoPosition = mapper.process( 
 					x, //100-y
-					SensorConfig.WRIST_LEFT_X_MAX, 
-					SensorConfig.WRIST_LEFT_X_MIN, 
+					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.FOREARM_YAW_LEFT_MAX, 
 					MasterArmsConfig.FOREARM_YAW_LEFT_MIN,
 					false
@@ -216,8 +208,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			servoOnePosition = mapper.process( 
 					y, 
-					SensorConfig.SHOULDER_RIGHT_Y_MAX, 
-					SensorConfig.SHOULDER_RIGHT_Y_MIN, 
+					MasterArmsConfig.GEARED_SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_ROLL_RIGHT_MAX, 
 					MasterArmsConfig.ARM_ROLL_RIGHT_MIN,
 					false
@@ -225,8 +216,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			servoTwoPosition = mapper.process(
 					x, 
-					SensorConfig.SHOULDER_RIGHT_X_MAX, 
-					SensorConfig.SHOULDER_RIGHT_X_MIN, 
+					MasterArmsConfig.GEARED_SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_PITCH_RIGHT_MAX, 
 					MasterArmsConfig.ARM_PITCH_RIGHT_MIN,
 					true
@@ -250,20 +240,18 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			servoOnePosition = mapper.process( 
 					y, //50 - x
-					SensorConfig.ELBOW_RIGHT_Y_MAX, 
-					SensorConfig.ELBOW_RIGHT_Y_MIN, 
+					MasterArmsConfig.SERVO_SENSOR_RATIO,
 					MasterArmsConfig.ELBOW_ROLL_RIGHT_MAX, 
 					MasterArmsConfig.ELBOW_ROLL_RIGHT_MIN,
-					true
+					false
 					);
 			
 			servoTwoPosition = mapper.process( 
 					x, //130 - y
-					SensorConfig.ELBOW_RIGHT_X_MAX, 
-					SensorConfig.ELBOW_RIGHT_X_MIN, 
+					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_YAW_RIGHT_MAX, 
 					MasterArmsConfig.ARM_YAW_RIGHT_MIN,
-					false
+					true
 					);
 			
 			if(servoTwoPosition != jointPositions[10])
@@ -284,8 +272,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		{
 			servoOnePosition = mapper.process( 
 					z, 
-					SensorConfig.WRIST_RIGHT_Y_MAX, 
-					SensorConfig.WRIST_RIGHT_Y_MIN, 
+					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.WRIST_ROLL_RIGHT_MAX, 
 					MasterArmsConfig.WRIST_ROLL_RIGHT_MIN,
 					false
@@ -293,8 +280,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 			
 			servoTwoPosition = mapper.process( 
 					x, 
-					SensorConfig.WRIST_RIGHT_X_MAX, 
-					SensorConfig.WRIST_RIGHT_X_MIN, 
+					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.FOREARM_YAW_RIGHT_MAX, 
 					MasterArmsConfig.FOREARM_YAW_RIGHT_MIN,
 					true
@@ -354,6 +340,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		x = yeiDataInstance.getX();
 		y = yeiDataInstance.getY();
 		z = yeiDataInstance.getZ();
+		yeiDataInstance = null;
 		
 		controller.changeText(jointType, x, y, z);
 		generatePositions(jointType, x, y, z);
