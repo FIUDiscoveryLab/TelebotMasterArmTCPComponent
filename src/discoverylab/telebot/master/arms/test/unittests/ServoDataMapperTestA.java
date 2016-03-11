@@ -8,12 +8,10 @@ package discoverylab.telebot.master.arms.test.unittests;
 //for FIU Discovery Lab Telebot - Arms
 
 import junit.framework.TestCase;
-
-
 import discoverylab.telebot.master.arms.*;
 
 
-public class ServoDataMapperTest2 extends TestCase {
+public class ServoDataMapperTestA extends TestCase {
 	private TelebotMasterArmsTCPComponent controller;
 	
 	protected void setUp() throws Exception {
