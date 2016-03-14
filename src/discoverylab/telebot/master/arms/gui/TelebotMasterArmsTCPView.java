@@ -2,6 +2,7 @@ package discoverylab.telebot.master.arms.gui;
 
 import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,23 +18,22 @@ public class TelebotMasterArmsTCPView extends JFrame
 	private JLabel rightElbowLabel = new JLabel("Right Elbow: ");
 	private JLabel rightWristLabel = new JLabel("Right Wrist: ");
 	
-	private JTextField headText = new JTextField();
-	private JTextField leftShoulderText = new JTextField();
-	private JTextField leftElbowText = new JTextField();
-	private JTextField leftWristText = new JTextField();
-	private JTextField rightShoulderText = new JTextField();
-	private JTextField rightElbowText = new JTextField();
-	private JTextField rightWristText = new JTextField();
+	private JTextField headText = new JTextField("no data");
+	private JTextField leftShoulderText = new JTextField("no data", 1);
+	private JTextField leftElbowText = new JTextField("no data", 1);
+	private JTextField leftWristText = new JTextField("no data", 1);
+	private JTextField rightShoulderText = new JTextField("no data", 1);
+	private JTextField rightElbowText = new JTextField("no data", 1);
+	private JTextField rightWristText = new JTextField("no data", 1);
 
 	public TelebotMasterArmsTCPView()
 	{
-//		GridLayout gridLayout = new GridLayout(14, 2, 1, 1)
-		
-		JPanel viewPanel = new JPanel(new GridLayout(14, 2, 1, 1));
+		JPanel viewPanel = new JPanel(new GridLayout(7, 4, 10, 50));
+		viewPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+		this.setTitle("IMU Control System");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(400, 700);
-		
-//		viewPanel.setLayout(gridLayout);
+		this.setSize(300, 600);
+	
 		viewPanel.add(headLabel);
 		viewPanel.add(headText);
 		viewPanel.add(leftShoulderLabel);
