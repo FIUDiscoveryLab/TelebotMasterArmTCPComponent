@@ -1,10 +1,13 @@
 package discoverylab.telebot.master.arms.gui;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -25,14 +28,18 @@ public class TelebotMasterArmsTCPView extends JFrame
 	private JTextField rightShoulderText = new JTextField("no data", 1);
 	private JTextField rightElbowText = new JTextField("no data", 1);
 	private JTextField rightWristText = new JTextField("no data", 1);
+	
+	private JLabel portNumberLabel = new JLabel("Port Number: ");
+	private JTextField portNumberText = new JTextField("enter port");
+	private JButton listenButton = new JButton("Listen");
 
 	public TelebotMasterArmsTCPView()
 	{
-		JPanel viewPanel = new JPanel(new GridLayout(7, 4, 10, 50));
+		JPanel viewPanel = new JPanel(new GridLayout(9, 4, 10, 50));
 		viewPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 		this.setTitle("IMU Control System");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(300, 600);
+		this.setSize(400, 700);
 	
 		viewPanel.add(headLabel);
 		viewPanel.add(headText);
@@ -48,10 +55,16 @@ public class TelebotMasterArmsTCPView extends JFrame
 		viewPanel.add(rightElbowText);
 		viewPanel.add(rightWristLabel);
 		viewPanel.add(rightWristText);
+		viewPanel.add(portNumberLabel);
+		viewPanel.add(portNumberText);
+		viewPanel.add(listenButton);
 		this.add(viewPanel);
 	}
 	
-
+	public String getPortNumberText() {
+		return portNumberText.getText();
+	}
+	
 	public String getHeadText() {
 		return headText.getText();
 	}
@@ -80,6 +93,11 @@ public class TelebotMasterArmsTCPView extends JFrame
 		return rightWristText.getText();
 	}
 
+	public void setPortNumberText(String text)
+	{
+		portNumberText.setText(text);
+	}
+	
 	public void setHeadText(String text)
 	{
 		headText.setText(text);
@@ -113,5 +131,15 @@ public class TelebotMasterArmsTCPView extends JFrame
 	public void setRightWristText(String text)
 	{
 		rightWristText.setText(text);
+	}
+	
+	void addConnectListener(ActionListener e)
+	{
+		listenButton.addActionListener(e);
+	}
+	
+	void displayErrorMessage(String error)
+	{
+		JOptionPane.showMessageDialog(this, error);
 	}
 }

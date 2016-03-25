@@ -18,15 +18,5 @@ public class TelebotMasterArmsTCPTest {
 		
 		view.setVisible(true);
 		
-		// 1. INITIATE Slave Component DEVICE
-		TelebotMasterArmsTCPComponent telebotMasterArms = new TelebotMasterArmsTCPComponent(6666, controller);
-		telebotMasterArms.initiate();
-		
-		// 2. INITIATE Transmission PROTOCOL
-		telebotMasterArms.initiateTransmissionProtocol(TOPIC_MASTER_TO_SLAVE_ARMS.VALUE
-				, TMasterToArms.class);
-		
-		// 3. INITATE DataWriter
-		telebotMasterArms.initiateDataWriter();
 	}
 }

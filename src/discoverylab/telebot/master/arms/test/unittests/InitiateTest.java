@@ -4,29 +4,29 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import discoverylab.telebot.master.arms.TelebotMasterArmsTCPComponent;
 import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController;
 import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController.DataListener;
 import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPView;
 
-public class ChangeTextTest 
-{
-	
+public class InitiateTest {
+
 	@Test
-	public void testChangeText() 
+	public void testInitiate() 
 	{
-		String jointType = "head";
-		int x = 30;
-		int y = 60;
-		int z = -1;
-		
 		TelebotMasterArmsTCPView view = new TelebotMasterArmsTCPView();
 		TelebotMasterArmsTCPController controller = new TelebotMasterArmsTCPController(view);
+		
 		DataListener listener = controller.new DataListener();
 		
-		listener.changeText(jointType, x, y, z);
-		String displayedText = x + " " + y + " " + z;
-		assertEquals(view.getHeadText(), displayedText);
-		System.out.println("Tested changeText()");
+		int portNumber = 6666;
+		TelebotMasterArmsTCPComponent telebotMasterArms = new TelebotMasterArmsTCPComponent(listener, portNumber);
+		
+		boolean serverStarted = telebotMasterArms.initiate();
+		
+		assertEquals(true, serverStarted);
+		System.out.println("Tested initiate()");
+
 	}
 
 }
