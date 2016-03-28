@@ -4,6 +4,7 @@ import static discoverylab.util.logging.LogUtils.*;
 import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
 import discoverylab.telebot.master.arms.configurations.SensorConfig;
 import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController;
+import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController.DataListener;
 import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPView;
 import discoverylab.telebot.master.arms.mapper.ServoDataMapper;
 import com.rti.dds.infrastructure.InstanceHandle_t;
@@ -28,17 +29,17 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	
 	private TMasterToArmsDataWriter writer;
 	private TelebotMasterArmsTCPView view;
-	private TelebotMasterArmsTCPController controller;
+	private DataListener listener;
 	
 	TMasterToArms instance = new TMasterToArms();
 	InstanceHandle_t instance_handle = InstanceHandle_t.HANDLE_NIL;
 	
-	public TelebotMasterArmsTCPComponent(int portNumber, TelebotMasterArmsTCPController controller) 
+	public TelebotMasterArmsTCPComponent(DataListener listener, int portNumber) 
 	{
 		super(portNumber);
 		parser = new YEIDataParser();
 		mapper = new ServoDataMapper();
-		this.controller = controller;
+		this.listener = listener;
 		
 		jointPositions = new int[14];
 		
@@ -344,7 +345,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		z = yeiDataInstance.getZ();
 		yeiDataInstance = null;
 		
-		controller.changeText(jointType, x, y, z);
+		listener.changeText(jointType, x, y, z);
 		generatePositions(jointType, x, y, z);
 	}
 

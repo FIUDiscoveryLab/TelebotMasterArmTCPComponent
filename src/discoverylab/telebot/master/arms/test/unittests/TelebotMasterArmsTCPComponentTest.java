@@ -7,6 +7,7 @@ import java.net.Socket;
 
 import discoverylab.telebot.master.arms.TelebotMasterArmsTCPComponent;
 import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController;
+import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController.DataListener;
 import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPView;
 
 import org.junit.BeforeClass;
@@ -50,7 +51,8 @@ public class TelebotMasterArmsTCPComponentTest {
 	{
 		
 		controller = new TelebotMasterArmsTCPController(view);
-		telebotMasterArms = new TelebotMasterArmsTCPComponent(dummyPort, controller);
+		DataListener listener = controller.new DataListener();
+		telebotMasterArms = new TelebotMasterArmsTCPComponent(listener, dummyPort);
 		telebotMasterArms.initiate();
 		telebotMasterArms.initiateTransmissionProtocol(TOPIC_MASTER_TO_SLAVE_ARMS.VALUE
 				, TMasterToArms.class);
