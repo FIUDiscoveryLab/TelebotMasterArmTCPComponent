@@ -2,9 +2,9 @@ package discoverylab.telebot.master.arms;
 
 import static discoverylab.util.logging.LogUtils.*;
 import discoverylab.telebot.master.arms.configurations.MasterArmsConfig;
-//import discoverylab.telebot.master.arms.configurations.SensorConfig;
+import discoverylab.telebot.master.arms.configurations.SensorConfig;
 import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPController;
-//import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPView;
+import discoverylab.telebot.master.arms.gui.TelebotMasterArmsTCPView;
 import discoverylab.telebot.master.arms.mapper.ServoDataMapper;
 import com.rti.dds.infrastructure.InstanceHandle_t;
 import TelebotDDSCore.Source.Java.Generated.master.arms.TMasterToArms;
@@ -27,7 +27,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	private int[] jointPositions;
 	
 	private TMasterToArmsDataWriter writer;
-	//private TelebotMasterArmsTCPView view;
+	private TelebotMasterArmsTCPView view;
 	private TelebotMasterArmsTCPController controller;
 	
 	TMasterToArms instance = new TMasterToArms();
@@ -78,19 +78,21 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		
 		if(jointType.equals("head"))
 		{
-			servoOnePosition = mapper.process(
+			servoOnePosition = mapper.processHead(
 					x, 
 					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.HEAD_PITCH_MAX, 
 					MasterArmsConfig.HEAD_PITCH_MIN,
+					MasterArmsConfig.HEAD_PITCH_REST,
 					true
 					);
 			
-			servoTwoPosition = mapper.process(
-					y, 
+			servoTwoPosition = mapper.processHead(
+					z, 
 					MasterArmsConfig.SERVO_SENSOR_RATIO,
 					MasterArmsConfig.HEAD_YAW_MAX, 
 					MasterArmsConfig.HEAD_YAW_MIN,
+					MasterArmsConfig.HEAD_YAW_REST,
 					false
 					);
 			
