@@ -49,6 +49,20 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 		}
 	}
 	
+	public TelebotMasterArmsTCPComponent(int portNumber) 
+	{
+		super(portNumber);
+		parser = new YEIDataParser();
+		mapper = new ServoDataMapper();
+		
+		jointPositions = new int[14];
+		
+		for(int i = 0; i < jointPositions.length; i++)
+		{
+			jointPositions[i] = -1;
+		}
+	}
+	
 	public int[] getJointPositions()
 	{
 		return jointPositions;
@@ -89,7 +103,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			servoTwoPosition = mapper.processHead(
-					z, 
+					y, 
 					MasterArmsConfig.SERVO_SENSOR_RATIO,
 					MasterArmsConfig.HEAD_YAW_MAX, 
 					MasterArmsConfig.HEAD_YAW_MIN,

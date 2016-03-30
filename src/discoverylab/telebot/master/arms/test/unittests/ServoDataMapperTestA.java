@@ -16,7 +16,7 @@ public class ServoDataMapperTestA extends TestCase {
 	
 	protected void setUp() throws Exception {
 		super.setUp();
-		controller = new TelebotMasterArmsTCPComponent(6666, null);
+		controller = new TelebotMasterArmsTCPComponent(6666);
 	}
 
 	protected void tearDown() throws Exception {

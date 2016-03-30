@@ -10,7 +10,7 @@ import discoverylab.telebot.master.arms.TelebotMasterArmsTCPComponent;
 public class TelebotMasterArmsTCPController 
 {
 	private TelebotMasterArmsTCPView view;
-	private TelebotMasterArmsTCPComponent telebotMasterArms;
+	public TelebotMasterArmsTCPComponent telebotMasterArms;
 	
 	public TelebotMasterArmsTCPController(TelebotMasterArmsTCPView view)
 	{
