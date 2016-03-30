@@ -16,6 +16,7 @@ public class TelebotMasterArmsTCPController
 	{
 		this.view = view;
 		this.view.addConnectListener(new ConnectListener());
+		this.view.addDDSListener(new DDSListener());
 	}
 
 	public class DataListener
@@ -67,20 +68,34 @@ public class TelebotMasterArmsTCPController
 				telebotMasterArms = new TelebotMasterArmsTCPComponent(listener, portNumber);
 
 				// 1. INITIATE Slave Component DEVICE
-				telebotMasterArms.initiate();
-					
-				// 2. INITIATE Transmission PROTOCOL
-				telebotMasterArms.initiateTransmissionProtocol(TOPIC_MASTER_TO_SLAVE_ARMS.VALUE
-											, TMasterToArms.class);
-									
-				// 3. INITIATE DataWriter
-				telebotMasterArms.initiateDataWriter();	
+				telebotMasterArms.initiate();	
 			}
 			catch(NumberFormatException exception)
 			{
 				view.displayErrorMessage("Please enter a valid port number.");
 			}
 		}
+	}
+	
+	class DDSListener implements ActionListener
+	{	
+		public void actionPerformed(ActionEvent e)
+		{
+			try
+			{
+				// 2. INITIATE Transmission PROTOCOL
+				telebotMasterArms.initiateTransmissionProtocol(TOPIC_MASTER_TO_SLAVE_ARMS.VALUE
+												, TMasterToArms.class);
+										
+				// 3. INITIATE DataWriter
+				telebotMasterArms.initiateDataWriter();	
+			}
+			catch(Exception exception)
+			{
+				view.displayErrorMessage("Please connect to the Mocap System.");
+			}
+		}
+		
 	}
 }
 

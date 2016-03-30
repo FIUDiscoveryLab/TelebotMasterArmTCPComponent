@@ -57,8 +57,9 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	 * Cast the Writer to our Arms DataWriter
 	 * This allows us to publish the appropriate Topic data
 	 */
-	public void initiateDataWriter(){
+	public boolean initiateDataWriter(){
 		writer = (TMasterToArmsDataWriter) getDataWriter();
+		return true;
 	}
 
 	public String writeServoData(int servoID, int servoPosition, int servoSpeed)
