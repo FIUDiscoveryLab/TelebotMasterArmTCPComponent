@@ -11,6 +11,7 @@ public class TelebotMasterArmsTCPController
 {
 	private TelebotMasterArmsTCPView view;
 	private TelebotMasterArmsTCPComponent telebotMasterArms;
+	private boolean isConnected = false;
 	
 	public TelebotMasterArmsTCPController(TelebotMasterArmsTCPView view)
 	{
@@ -68,7 +69,7 @@ public class TelebotMasterArmsTCPController
 				telebotMasterArms = new TelebotMasterArmsTCPComponent(listener, portNumber);
 
 				// 1. INITIATE Slave Component DEVICE
-				telebotMasterArms.initiate();	
+				isConnected = telebotMasterArms.initiate();	
 			}
 			catch(NumberFormatException exception)
 			{
@@ -83,16 +84,24 @@ public class TelebotMasterArmsTCPController
 		{
 			try
 			{
-				// 2. INITIATE Transmission PROTOCOL
-				telebotMasterArms.initiateTransmissionProtocol(TOPIC_MASTER_TO_SLAVE_ARMS.VALUE
-												, TMasterToArms.class);
-										
-				// 3. INITIATE DataWriter
-				telebotMasterArms.initiateDataWriter();	
+				if(isConnected)
+				{
+					// 2. INITIATE Transmission PROTOCOL
+					telebotMasterArms.initiateTransmissionProtocol(TOPIC_MASTER_TO_SLAVE_ARMS.VALUE
+													, TMasterToArms.class);
+											
+					// 3. INITIATE DataWriter
+					telebotMasterArms.initiateDataWriter();	
+				}
+				else
+				{
+					view.displayErrorMessage("Please connect to the Mocap System.");
+				}
+
 			}
 			catch(Exception exception)
 			{
-				view.displayErrorMessage("Please connect to the Mocap System.");
+				view.displayErrorMessage("An error has occurred. Cannot launch Publisher. Read console.");
 			}
 		}
 		
