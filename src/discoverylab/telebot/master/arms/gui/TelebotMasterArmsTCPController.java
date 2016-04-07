@@ -53,6 +53,17 @@ public class TelebotMasterArmsTCPController
 				view.setRightWristText(x + " " + y + " " + z);
 			}
 		}
+		
+		public void changeLabel()
+		{
+			view.setHeadText("no data");
+			view.setLeftShoulderText("no data");
+			view.setLeftElbowText("no data");
+			view.setLeftWristText("no data");
+			view.setRightShoulderText("no data");
+			view.setRightElbowText("no data");
+			view.setRightWristText("no data");
+		}
 	}
 	
 	
