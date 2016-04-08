@@ -80,7 +80,7 @@ public class TelebotMasterArmsTCPController
 				telebotMasterArms = new TelebotMasterArmsTCPComponent(listener, portNumber);
 
 				// 1. INITIATE Slave Component DEVICE
-				isConnected = telebotMasterArms.initiate();	
+				telebotMasterArms.initiate();	
 			}
 			catch(NumberFormatException exception)
 			{
@@ -95,7 +95,7 @@ public class TelebotMasterArmsTCPController
 		{
 			try
 			{
-				if(isConnected)
+				if(telebotMasterArms.isConnected())
 				{
 					// 2. INITIATE Transmission PROTOCOL
 					telebotMasterArms.initiateTransmissionProtocol(TOPIC_MASTER_TO_SLAVE_ARMS.VALUE
