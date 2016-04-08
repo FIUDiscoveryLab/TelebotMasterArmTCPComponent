@@ -11,7 +11,6 @@ public class TelebotMasterArmsTCPController
 {
 	private TelebotMasterArmsTCPView view;
 	private TelebotMasterArmsTCPComponent telebotMasterArms;
-	private boolean isConnected = false;
 	
 	public TelebotMasterArmsTCPController(TelebotMasterArmsTCPView view)
 	{
@@ -112,7 +111,7 @@ public class TelebotMasterArmsTCPController
 			}
 			catch(Exception exception)
 			{
-				view.displayErrorMessage("An error has occurred. Cannot launch Publisher. Read console.");
+				view.displayErrorMessage("An error has occurred. Cannot launch Publisher.");
 			}
 		}
 		
