@@ -22,9 +22,10 @@ public class InitiateTest {
 		int portNumber = 6666;
 		TelebotMasterArmsTCPComponent telebotMasterArms = new TelebotMasterArmsTCPComponent(listener, portNumber);
 		
-		boolean serverStarted = telebotMasterArms.initiate();
+		telebotMasterArms.initiate();
+		boolean serverLaunched = telebotMasterArms.serverLaunched();
 		
-		assertEquals(true, serverStarted);
+		assertEquals(true, serverLaunched);
 		System.out.println("Tested initiate()");
 
 	}

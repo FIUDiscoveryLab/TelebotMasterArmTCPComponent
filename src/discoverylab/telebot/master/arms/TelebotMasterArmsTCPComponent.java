@@ -71,8 +71,9 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	 * Cast the Writer to our Arms DataWriter
 	 * This allows us to publish the appropriate Topic data
 	 */
-	public void initiateDataWriter(){
+	public boolean initiateDataWriter(){
 		writer = (TMasterToArmsDataWriter) getDataWriter();
+		return true;
 	}
 
 	public String writeServoData(int servoID, int servoPosition, int servoSpeed)
@@ -348,19 +349,25 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	@Override
 	public void callback(String data) { //try synchronized
 		
-//		LOGI(TAG, "DATA: " + data );
-		YEIDataModel yeiDataInstance = (YEIDataModel) parser.parse(data);
-		
-		int x, y, z = -1;
-		
-		String jointType = yeiDataInstance.getJointType();
-		x = yeiDataInstance.getX();
-		y = yeiDataInstance.getY();
-		z = yeiDataInstance.getZ();
-		yeiDataInstance = null;
-		
-		listener.changeText(jointType, x, y, z);
-		generatePositions(jointType, x, y, z);
+		if(data.equals("null"))
+		{
+			listener.changeLabel();
+			generatePositions("null", -1, -1, -1);
+		}
+		else
+		{
+			YEIDataModel yeiDataInstance = (YEIDataModel) parser.parse(data);
+			
+			int x, y, z = -1;
+			
+			String jointType = yeiDataInstance.getJointType();
+			x = yeiDataInstance.getX();
+			y = yeiDataInstance.getY();
+			z = yeiDataInstance.getZ();
+
+			listener.changeText(jointType, x, y, z);
+			generatePositions(jointType, x, y, z);
+		}
 	}
 
 	/**

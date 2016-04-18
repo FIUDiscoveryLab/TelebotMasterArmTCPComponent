@@ -32,6 +32,8 @@ public class TelebotMasterArmsTCPView extends JFrame
 	private JLabel portNumberLabel = new JLabel("Port Number: ");
 	private JTextField portNumberText = new JTextField("enter port");
 	private JButton listenButton = new JButton("Listen");
+	
+	private JButton ddsButton = new JButton("Publish");
 
 	public TelebotMasterArmsTCPView()
 	{
@@ -58,6 +60,8 @@ public class TelebotMasterArmsTCPView extends JFrame
 		viewPanel.add(portNumberLabel);
 		viewPanel.add(portNumberText);
 		viewPanel.add(listenButton);
+		viewPanel.add(ddsButton);
+		
 		this.add(viewPanel);
 	}
 	
@@ -136,6 +140,11 @@ public class TelebotMasterArmsTCPView extends JFrame
 	void addConnectListener(ActionListener e)
 	{
 		listenButton.addActionListener(e);
+	}
+	
+	void addDDSListener(ActionListener e)
+	{
+		ddsButton.addActionListener(e);
 	}
 	
 	void displayErrorMessage(String error)

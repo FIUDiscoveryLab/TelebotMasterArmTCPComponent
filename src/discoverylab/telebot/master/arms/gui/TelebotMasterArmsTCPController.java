@@ -16,6 +16,7 @@ public class TelebotMasterArmsTCPController
 	{
 		this.view = view;
 		this.view.addConnectListener(new ConnectListener());
+		this.view.addDDSListener(new DDSListener());
 	}
 
 	public class DataListener
@@ -51,6 +52,17 @@ public class TelebotMasterArmsTCPController
 				view.setRightWristText(x + " " + y + " " + z);
 			}
 		}
+		
+		public void changeLabel()
+		{
+			view.setHeadText("no data");
+			view.setLeftShoulderText("no data");
+			view.setLeftElbowText("no data");
+			view.setLeftWristText("no data");
+			view.setRightShoulderText("no data");
+			view.setRightElbowText("no data");
+			view.setRightWristText("no data");
+		}
 	}
 	
 	
@@ -67,20 +79,42 @@ public class TelebotMasterArmsTCPController
 				telebotMasterArms = new TelebotMasterArmsTCPComponent(listener, portNumber);
 
 				// 1. INITIATE Slave Component DEVICE
-				telebotMasterArms.initiate();
-					
-				// 2. INITIATE Transmission PROTOCOL
-				telebotMasterArms.initiateTransmissionProtocol(TOPIC_MASTER_TO_SLAVE_ARMS.VALUE
-											, TMasterToArms.class);
-									
-				// 3. INITIATE DataWriter
-				telebotMasterArms.initiateDataWriter();	
+				telebotMasterArms.initiate();	
 			}
 			catch(NumberFormatException exception)
 			{
 				view.displayErrorMessage("Please enter a valid port number.");
 			}
 		}
+	}
+	
+	class DDSListener implements ActionListener
+	{	
+		public void actionPerformed(ActionEvent e)
+		{
+			try
+			{
+				if(telebotMasterArms.isConnected())
+				{
+					// 2. INITIATE Transmission PROTOCOL
+					telebotMasterArms.initiateTransmissionProtocol(TOPIC_MASTER_TO_SLAVE_ARMS.VALUE
+													, TMasterToArms.class);
+											
+					// 3. INITIATE DataWriter
+					telebotMasterArms.initiateDataWriter();	
+				}
+				else
+				{
+					view.displayErrorMessage("Please connect to the Mocap System.");
+				}
+
+			}
+			catch(Exception exception)
+			{
+				view.displayErrorMessage("An error has occurred. Cannot launch Publisher.");
+			}
+		}
+		
 	}
 }
 
