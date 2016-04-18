@@ -13,7 +13,7 @@ import TelebotDDSCore.Source.Java.Generated.master.arms.TOPIC_MASTER_TO_SLAVE_AR
 import discoverylab.telebot.master.arms.*;
 
 
-public class ServoDataMapperTestA extends TestCase {
+public class ServoDataMapperTestLeftElbow extends TestCase {
 	private TelebotMasterArmsTCPComponent controller;
 	
 	protected void setUp() throws Exception {
@@ -46,21 +46,18 @@ public class ServoDataMapperTestA extends TestCase {
 		controller.generatePositions("left_elbow", 0, -180, 0);
 	}
 	
-	public void testServoDataMapperShoulderValid(){
-		controller.generatePositions("right_shoulder", 0, 0, 0);
-		controller.generatePositions("right_shoulder", 0, 15, 0);
-		controller.generatePositions("right_shoulder", 0, 30, 0);
-		controller.generatePositions("right_shoulder", 0, 45, 0);
-		controller.generatePositions("right_shoulder", 0, 60, 0);
-		controller.generatePositions("right_shoulder", 0, 75, 0);
-		controller.generatePositions("right_shoulder", 0, 90, 0);
+	public void testServoDataMapperArmYawValid(){
+		controller.generatePositions("left_elbow", 0, 0, 0);
+		controller.generatePositions("left_elbow", 45, 0, 45);
+		controller.generatePositions("left_elbow", 90, 0, 90);
+		controller.generatePositions("left_elbow", 104, 0, 104);
 	}
 	
-	public void testServoDataMapperShoulderInvalid(){
-		controller.generatePositions("right_shoulder", 0, -1, 0);
-		controller.generatePositions("right_shoulder", 0, -90, 0);
-		controller.generatePositions("right_shoulder", 0, 91, 0);
-		controller.generatePositions("right_shoulder", 0, 179, 0);
+	public void testServoDataMapperArmYawInvalid(){
+		controller.generatePositions("left_elbow", -1, 0, -1);
+		controller.generatePositions("left_elbow", 105, 0, 105);
+		controller.generatePositions("left_elbow", -36, 0, -36);
+		controller.generatePositions("left_elbow", 180, 0, 180);
 	}
 
 }
