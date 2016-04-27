@@ -201,7 +201,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					);
 			
 			servoTwoPosition = mapper.process( 
-					y,
+					z,
 					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.FOREARM_YAW_LEFT_MAX, 
 					MasterArmsConfig.FOREARM_YAW_LEFT_MIN,
