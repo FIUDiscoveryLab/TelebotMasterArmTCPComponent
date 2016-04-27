@@ -43,6 +43,5 @@ public class SensorConfig {
 	public static final int WRIST_RIGHT_Y_MIN = -32; //-70; //-53;
 	public static final int WRIST_RIGHT_Z_MAX = 117; //*** Old Value
 	public static final int WRIST_RIGHT_Z_MIN = -78; //*** Old Value
-	
 
 }

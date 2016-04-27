@@ -105,13 +105,14 @@ public class TelebotMasterArmsTCPController
 				}
 				else
 				{
-					view.displayErrorMessage("Please connect to the Mocap System.");
+					view.displayErrorMessage("Please connect to the Mocap System to the Publisher Program.");
 				}
 
 			}
 			catch(Exception exception)
 			{
-				view.displayErrorMessage("An error has occurred. Cannot launch Publisher.");
+				view.displayErrorMessage("Cannot launch Publisher. Please enter port number, Listen to Port, and "
+						+ "connect the Mocap System to the Publisher Program.");
 			}
 		}
 		

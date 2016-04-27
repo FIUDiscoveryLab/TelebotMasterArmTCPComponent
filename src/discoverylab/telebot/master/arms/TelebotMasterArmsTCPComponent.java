@@ -318,7 +318,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 				LOGI(TAG, data);
 			}
 		}
-		else if(jointType.equals("null"))
+		else if(jointType.equals("closed"))
 		{
 			try
 			{
@@ -349,10 +349,10 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 	@Override
 	public void callback(String data) { //try synchronized
 		
-		if(data.equals("null"))
+		if(data.equals("closed"))
 		{
 			listener.changeLabel();
-			generatePositions("null", -1, -1, -1);
+			generatePositions("closed", -1, -1, -1);
 		}
 		else
 		{
