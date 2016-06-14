@@ -100,7 +100,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.HEAD_PITCH_MAX, 
 					MasterArmsConfig.HEAD_PITCH_MIN,
 					MasterArmsConfig.HEAD_PITCH_REST,
-					true
+					false
 					);
 			
 			servoTwoPosition = mapper.processHead(
@@ -109,7 +109,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.HEAD_YAW_MAX, 
 					MasterArmsConfig.HEAD_YAW_MIN,
 					MasterArmsConfig.HEAD_YAW_REST,
-					false
+					true
 					);
 			
 			if(servoOnePosition != jointPositions[0])
@@ -141,7 +141,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.GEARED_SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_PITCH_LEFT_MAX, 
 					MasterArmsConfig.ARM_PITCH_LEFT_MIN,
-					true
+					false
 					);
 			
 			if(servoTwoPosition != jointPositions[2])
@@ -173,7 +173,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.ARM_YAW_LEFT_MAX, 
 					MasterArmsConfig.ARM_YAW_LEFT_MIN,
-					false
+					true
 					);
 			
 			if(servoTwoPosition != jointPositions[4])
@@ -301,7 +301,7 @@ public class TelebotMasterArmsTCPComponent extends CoreMasterTCPComponent implem
 					MasterArmsConfig.SERVO_SENSOR_RATIO, 
 					MasterArmsConfig.FOREARM_YAW_RIGHT_MAX, 
 					MasterArmsConfig.FOREARM_YAW_RIGHT_MIN,
-					true
+					false
 					);
 
 			if(servoTwoPosition != jointPositions[12])
