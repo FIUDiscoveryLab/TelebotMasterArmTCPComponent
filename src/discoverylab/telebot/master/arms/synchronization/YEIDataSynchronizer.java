@@ -1,10 +1,10 @@
-//package discoverylab.telebot.master.arms.synchronization;
+package discoverylab.telebot.master.arms.synchronization;
 //
-//import discoverylab.telebot.master.arms.model.YEIDataModel;
+import discoverylab.telebot.master.arms.model.YEIDataModel;
 //
-//public class YEIDataSynchronizer extends Synchronizer {
+public class YEIDataSynchronizer extends Synchronizer {
 //	
-//	public YEIDataSynchronizer(){}
+	public YEIDataSynchronizer(){}
 //	
 //	public void findMaxMin(YEIDataModel instance, int maxX, int minX, 
 //			int maxY, int minY, int maxZ, int minZ)
@@ -84,17 +84,17 @@
 //		return count;
 //	}
 //
-//	@Override
-//	public void findMaxMin(Object instance, int maxX, int minX, int maxY,
-//			int minY, int maxZ, int minZ) {
+	@Override
+	public void findMaxMin(Object instance, int maxX, int minX, int maxY,
+			int minY, int maxZ, int minZ) {
 //		// TODO Auto-generated method stub
 //		
-//	}
+	}
 //
-//	@Override
-//	public int synchronize(Object instance, int count) {
+	@Override
+	public int synchronize(Object instance, int count) {
 //		// TODO Auto-generated method stub
-//		return 0;
-//	}
+		return 0;
+	}
 //	
-//}
+}
